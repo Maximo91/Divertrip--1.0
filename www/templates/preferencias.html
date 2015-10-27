@@ -1,0 +1,21 @@
+<ion-view title="PREFERENCIAS">
+    <ion-content padding="true" class="has-header">
+        <button class="button icon-left button-icon ion-navicon-round" ui-sref="menu"></button>
+        <form class="list">
+            <ion-toggle toggle-class="toggle-balanced" ng-model="settings.recibirnotificaciones">Recibir Notificaciones</ion-toggle>
+        </form>
+        <h4>Filtro Categorías</h4>
+        <form class="list">
+            <ion-checkbox>Arte</ion-checkbox>
+            <ion-checkbox>Música</ion-checkbox>
+            <ion-checkbox>Charlas</ion-checkbox>
+            <ion-checkbox>Talleres</ion-checkbox>
+            <ion-checkbox>Cine</ion-checkbox>
+            <ion-checkbox>Teatro</ion-checkbox>
+            <ion-checkbox>Deportes</ion-checkbox>
+            <h3>Idioma</h3>
+            <ion-radio>Español</ion-radio>
+            <ion-radio>Ingles</ion-radio>
+        </form>
+    </ion-content>
+</ion-view>

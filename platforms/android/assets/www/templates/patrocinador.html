@@ -1,0 +1,29 @@
+<ion-view title="PATROCINADOR">
+    <ion-content padding="true" class="has-header">
+        <br><br>
+        <img src="img/patrocinador.png" style="display:block;margin-left:auto;margin-right:auto;width:200px">
+            <ion-list>
+                <br><br>
+                <form action="http://192.168.0.5/tap/divertrip/index.php?r=patrocinador/login">
+                    <label class="item item-input">
+                        <span class="input-label" >Usuario</span>
+                        <input name="user_name" type="text" placeholder="">
+                    </label>
+                    <br>
+                    <label class="item item-input">
+                        <span class="input-label">Contraseña</span>
+                        <input name="passwd"  type="password" placeholder="">
+                    </label>
+                
+
+                    <div class="spacer" style="width: 300px; height: 53px;"></div>
+                    <button class="button button-positive button-block icon-right ion-chevron-right" name="botoningresar" onclick="valida(pass)">Iniciar Sesión</button>
+
+                    </form>
+
+            <a ui-sref="reestablecer" class="button button-positive button-clear button-block ">¿Olvidaste tu contraseña?</a>
+            </ion-list>
+    </ion-content>
+</ion-view>
+
+
