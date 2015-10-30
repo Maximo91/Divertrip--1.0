@@ -15,7 +15,7 @@ angular.module('app.routes', [])
     })
     
     .state('inicio', {
-      url: '/page1',
+      url: '/page15',
       templateUrl: 'templates/inicio.html',
       controller: 'inicioCtrl'
     })
