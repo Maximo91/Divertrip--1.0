@@ -1,6 +1,23 @@
 angular.module('app.controllers', [])
   
-.controller('dIVERTRIPCtrl', function($scope) {
+.controller('dIVERTRIPCtrl', function($scope, $ionicPopup) {
+  
+  	$scope.salir = function() {
+    	var confirmPopup = $ionicPopup.confirm({
+    	title: 'LA APLICACION SE CERRARA',
+    	template: ' ¿Desea continuar ?',
+    	buttons:[
+    	{text:'NO', 
+        onTap:function(e){
+       	return true; 
+       	}
+       	},
+        {text: 'SI', 
+        type: 'button-positive',
+       	onTap: function(e){
+       	return true; 
+       	}
+        }]});
 
 })
    
@@ -32,11 +49,45 @@ angular.module('app.controllers', [])
   }
 })
    
-.controller('bienvenidoCtrl', function($scope) {
+.controller('bienvenidoCtrl', function($scope, $ionicPopup) {
+  
+    	$scope.salir = function() {
+    	var confirmPopup = $ionicPopup.confirm({
+    	title: 'LA APLICACION SE CERRARA',
+    	template: ' ¿Desea continuar ?',
+    	buttons:[
+    	{text:'NO', 
+        onTap:function(e){
+       	return true; 
+       	}
+       	},
+        {text: 'SI', 
+        type: 'button-positive',
+       	onTap: function(e){
+       	return true; 
+       	}
+        }]});
 
 })
    
-.controller('menuCtrl', function($scope) {
+.controller('menuCtrl', function($scope, $ionicPopup) {
+  
+    	$scope.salir = function() {
+    	var confirmPopup = $ionicPopup.confirm({
+    	title: 'LA APLICACION SE CERRARA',
+    	template: ' ¿Desea continuar ?',
+    	buttons:[
+    	{text:'NO', 
+        onTap:function(e){
+       	return true; 
+       	}
+       	},
+        {text: 'SI', 
+        type: 'button-positive',
+       	onTap: function(e){
+       	return true; 
+       	}
+        }]});
 
 })
    
@@ -71,11 +122,45 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('inicioCtrl', function($scope) {
+.controller('inicioCtrl', function($scope, $ionicPopup) {
+  
+    	$scope.salir = function() {
+    	var confirmPopup = $ionicPopup.confirm({
+    	title: 'LA APLICACION SE CERRARA',
+    	template: ' ¿Desea continuar ?',
+    	buttons:[
+    	{text:'NO', 
+        onTap:function(e){
+       	return true; 
+       	}
+       	},
+        {text: 'SI', 
+        type: 'button-positive',
+       	onTap: function(e){
+       	return true; 
+       	}
+        }]});
 
 })
    
-.controller('menuPatrocinadorCtrl', function($scope) {
+.controller('menuPatrocinadorCtrl', function($scope, $ionicPopup) {
+  
+    	$scope.salir = function() {
+    	var confirmPopup = $ionicPopup.confirm({
+    	title: 'LA APLICACION SE CERRARA',
+    	template: ' ¿Desea continuar ?',
+    	buttons:[
+    	{text:'NO', 
+        onTap:function(e){
+       	return true; 
+       	}
+       	},
+        {text: 'SI', 
+        type: 'button-positive',
+       	onTap: function(e){
+       	return true; 
+       	}
+        }]});
 
 })
    
