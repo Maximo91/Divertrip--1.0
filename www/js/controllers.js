@@ -21,7 +21,7 @@ angular.module('app.controllers', [])
       headers: {'Content-Type': 'application/json'}
     })
     .then(function(response) {
-      if(response != null) {
+      if(response.data != null) {
         $state.go('inicio');
       }
     })
