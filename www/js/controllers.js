@@ -93,5 +93,5 @@ angular.module('app.controllers', [])
    
 .controller('reestablecerCtrl', function($scope) {
 
-})
+});
  
