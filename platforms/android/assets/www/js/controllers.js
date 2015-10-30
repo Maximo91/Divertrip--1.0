@@ -8,8 +8,28 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('patrocinadorCtrl', function($scope) {
-
+.controller('patrocinadorCtrl', function($scope, $http, $state) {
+  $scope.submit = function(form) {
+    $http({
+      method: 'GET',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
+      params: {
+        r: 'patrocinador/login',
+        user_name: $scope.user_name,
+        passwd: $scope.passwd,
+      },
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(function(response) {
+      if(response.data != "null") {
+        $state.go('inicio');
+      }
+    })
+    .catch(function(err) {
+      console.log('Error');
+      console.log(err);
+    });
+  }
 })
    
 .controller('bienvenidoCtrl', function($scope) {
