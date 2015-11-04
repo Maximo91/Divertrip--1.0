@@ -27,7 +27,7 @@ angular.module('app.routes', [])
     })
 
     .state('administrarEventos', {
-      url: '/page3',
+      url: '/event_create',
       templateUrl: 'templates/administrarEventos.html',
       controller: 'administrarEventosCtrl'
     })
@@ -57,7 +57,7 @@ angular.module('app.routes', [])
     })
 
     .state('patrocinador', {
-      url: '/page3',
+      url: '/login_patrocinador',
       templateUrl: 'templates/patrocinador.html',
       controller: 'patrocinadorCtrl'
     })
