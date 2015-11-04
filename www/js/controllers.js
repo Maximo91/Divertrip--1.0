@@ -79,7 +79,48 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('administrarEventosCtrl', function($scope) {
+.controller('administrarEventosCtrl', function($http, $scope, $state) {
+  //create event
+  $scope.submit = function(form) {
+    $http({
+      method: 'POST',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
+      data: $scope.Evento,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    })
+    .then(function(response) {
+      if(response.data.status != "error") {
+        $state.go('historial');
+      }
+    })
+    .catch(function(err) {
+      console.log('Error');
+      console.log(err);
+    });
+  }
+})
+
+.controller('listarCategorias', function($scope, $http)
+{
+  $http({
+      method: 'GET',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
+      params: {
+        r: 'categoria/getCategoriesList',
+        //name_categoria: $scope.Categoria_idCategoria,
+      },
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(function(response) {
+      $scope.Categoria_idCategoria = [];
+      angular.forEach(response.data, function(value, key){
+        $scope.Categoria_idCategoria.push(value);
+      });
+    })
+    .catch(function(err) {
+      console.log('Error');
+      console.log(err);
+    });
 
 })
    
