@@ -1,7 +1,6 @@
 angular.module('app.controllers', [])
   
 .controller('dIVERTRIPCtrl', function($scope, $ionicPopup) {
-  
   	$scope.salir = function() {
     	  var confirmPopup = $ionicPopup.confirm({
     	  title: 'La aplicación se cerrara.',
@@ -26,7 +25,7 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('patrocinadorCtrl', function($scope, $http, $state) {
+.controller('patrocinadorCtrl', function($scope, $http, $state, $ionicPopup) {
   $scope.submit = function(form) {
     $http({
       method: 'GET',
@@ -46,7 +45,7 @@ angular.module('app.controllers', [])
          title: 'ERROR',
          template: 'La clave o el usuario son incorrectos',
        });
-    })
+    }})
     .catch(function(err) {
       console.log('Error');
       console.log(err);
