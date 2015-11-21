@@ -1,24 +1,7 @@
 angular.module('app.controllers', [])
   
-.controller('dIVERTRIPCtrl', function($scope, $ionicPopup) {
-  
-  	$scope.salir = function() {
-    	  var confirmPopup = $ionicPopup.confirm({
-    	  title: 'LA APLICACION SE CERRARA',
-    	  template: ' ¿Desea continuar ?',
-    	  buttons:[
-    	  {text:'NO', 
-        onTap:function(e){
-       	return true; 
-       	}
-       	},
-        {text: 'SI', 
-        type: 'button-positive',
-       	onTap: function(e){
-       	return true; 
-       	}
-        }]});
-  	};
+.controller('dIVERTRIPCtrl', function($scope) {
+
 })
    
 .controller('personasCtrl', function($scope) {
@@ -46,49 +29,15 @@ angular.module('app.controllers', [])
       console.log('Error');
       console.log(err);
     });
-  };
+  }
 })
    
-.controller('bienvenidoCtrl', function($scope, $ionicPopup) {
-  
-    	$scope.salir = function() {
-    	var confirmPopup = $ionicPopup.confirm({
-    	title: 'LA APLICACION SE CERRARA',
-    	template: ' ¿Desea continuar ?',
-    	buttons:[
-    	{text:'NO', 
-        onTap:function(e){
-       	return true; 
-       	}
-       	},
-        {text: 'SI', 
-        type: 'button-positive',
-       	onTap: function(e){
-       	return true; 
-       	}
-        }]});
-    };
+.controller('bienvenidoCtrl', function($scope) {
+
 })
    
-.controller('menuCtrl', function($scope, $ionicPopup) {
-  
-    	$scope.salir = function() {
-    	var confirmPopup = $ionicPopup.confirm({
-    	title: 'LA APLICACION SE CERRARA',
-    	template: ' ¿Desea continuar ?',
-    	buttons:[
-    	{text:'NO', 
-        onTap:function(e){
-       	return true; 
-       	}
-       	},
-        {text: 'SI', 
-        type: 'button-positive',
-       	onTap: function(e){
-       	return true; 
-       	}
-        }]});
-    	};
+.controller('menuCtrl', function($scope) {
+
 })
    
 .controller('eventosCtrl', function($scope) {
@@ -122,67 +71,55 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('inicioCtrl', function($scope, $ionicPopup) {
-  
-    	$scope.salir = function() {
-    	var confirmPopup = $ionicPopup.confirm({
-    	title: 'LA APLICACION SE CERRARA',
-    	template: ' ¿Desea continuar ?',
-    	buttons:[
-    	{text:'NO', 
-        onTap:function(e){
-       	return true; 
-       	}
-       	},
-        {text: 'SI', 
-        type: 'button-positive',
-       	onTap: function(e){
-       	return true; 
-       	}
-        }]});
-	};
+.controller('inicioCtrl', function($scope) {
+
 })
    
-.controller('menuPatrocinadorCtrl', function($scope, $ionicPopup) {
-  
-    	$scope.salir = function() {
-    	var confirmPopup = $ionicPopup.confirm({
-    	title: 'LA APLICACION SE CERRARA',
-    	template: ' ¿Desea continuar ?',
-    	buttons:[
-    	{text:'NO', 
-        onTap:function(e){
-       	return true; 
-       	}
-       	},
-        {text: 'SI', 
-        type: 'button-positive',
-       	onTap: function(e){
-       	return true; 
-       	}
-        }]});
-	};
+.controller('menuPatrocinadorCtrl', function($scope) {
+
 })
    
 .controller('administrarEventosCtrl', function($http, $scope, $state) {
   //create event
-  $scope.submit = function(form) {
+  $scope.Evento = {};
+  $scope.change_latResult = "";
+  $scope.change_coords = function() {
+    console.log('entre ctm');
+    $scope.Evento.latitude = $scope.latitude;
+    $scope.Evento.longitude = $scope.longitude;
+    /*var appElement = angular(document.querySelector('input[id=latitude]'));
+    appElement.attr('initial-value', '');
+    appElement.attr('value', '2');*/
+    console.log($scope.latitude);
+    //$scope.Evento=$scope.Evento.push({latitude: 5});
+  };
+
+  $scope.submit = function() {
     $http({
       method: 'POST',
-      url: 'http://divertrip.miguelgonzaleza.com/index.php',
+      url: 'http://localhost/tap/divertrip/index.php?r=evento/create',
       data: $scope.Evento,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     })
     .then(function(response) {
-      if(response.data.status != "error") {
+      /*
+      if(response.data.success == true) {
         $state.go('historial');
       }
+      */
+      console.log($scope.Evento);
+      /*
+        else{
+          pop up mono
+        }
+      */
     })
     .catch(function(err) {
       console.log('Error');
       console.log(err);
+      console.log($scope.Evento);
     });
-  }
+  };
 })
 
 .controller('listarCategorias', function($scope, $http)
@@ -208,7 +145,11 @@ angular.module('app.controllers', [])
     });
 
 })
-   
+
+.controller('MapController', function($scope, $ionicLoading) {
+
+  
+})   
 .controller('contrasenaCtrl', function($scope) {
 
 })

@@ -4,20 +4,21 @@
 
         <form name="formCreateEvent" ng-controller="administrarEventosCtrl" class="list">
             <label class="item item-input">
-                <span class="input-label">Patroconado</span>
-                <input ng-model="Evento.Patrocinador_idPatrocinador" type="text" placeholder="Ingrese nombre del patrocinador" >
+                <span class="input-label">Patrocinador</span>
+                <input ng-model="Evento.Patrocinador_idPatrocinador" name="Evento[Patrocinador_idPatrocinador]"type="text" placeholder="Ingrese nombre del patrocinador" >
             </label>
 
             <label class="item item-input">
                 <span class="input-label">Nombre</span>
-                <input ng-model="Evento.name_event" type="text" placeholder="Ingrese nombre del evento" >
+                <input ng-model="Evento.name_event" name="Evento[name_event]"type="text" placeholder="Ingrese nombre del evento" >
             </label>
             
             <div class="spacer" style="width: 300px; height: 12px;"></div>
             
-            <label class="item item-select">
+            <label class="item item-input item-select" ng-controller="listarCategorias">
                 <span class="input-label">Categoría</span>
-                <input ng-model="Evento.Categoria_idCategoria" type="text">
+                <select ng-model="Evento.Categoria_idCategoria" ng-options="obj.idCategoria as obj.name for obj in Categoria_idCategoria">
+                </select>
             </label>
             
             <div class="spacer" style="width: 300px; height: 12px;"></div>
@@ -31,7 +32,19 @@
             
             <label class="item item-input">
                 <span class="input-label">Lugar</span>
-                <input ng-model="Evento.Direccion_idDireccion" type="text" value="1">
+                <input ng-autocomplete ng-model="Evento.address" id="Autocomplete" type="text" ng-change="change_coords()" ng-click="change_coords()" ng-selected="change_coords()" placeholder="Dirección del evento">
+            </label>
+            <label class="item item-input" style="display: none">
+                <span class="input-label">Latitud</span>
+                <input type="text" ng-change="change_coords()" ng-model="latitude"/>
+                <span class="input-label">Evento.Latitud</span>
+                <input type="text" ng-model="Evento.latitude" />
+            </label>
+            <label class="item item-input" style="display: none">
+                <span class="input-label">Longitud</span>
+                <input type="text" ng-change="change_coords()" ng-model="longitude" />
+                <span class="input-label">Evento.Longitud</span>
+                <input type="text" ng-model="Evento.longitude" />
             </label>
             
             <div class="spacer" style="width: 300px; height: 12px;"></div>
@@ -44,7 +57,6 @@
             <div class="spacer" style="width: 300px; height: 12px;"></div>
 
             <label class="item item-input">
-
                 <span class="input-label">Url Imagen</span>
                 <input ng-model="Evento.image" type="text" placeholder="">
             </label>
