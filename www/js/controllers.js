@@ -1,5 +1,5 @@
 angular.module('app.controllers', [])
-  
+
 .controller('dIVERTRIPCtrl', function($scope) {
 
 })
@@ -8,7 +8,7 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('patrocinadorCtrl', function($scope, $http, $state) {
+.controller('patrocinadorCtrl', function($scope,$cookies,$http,$state) {
   $scope.submit = function(form) {
     $http({
       method: 'GET',
@@ -22,6 +22,8 @@ angular.module('app.controllers', [])
     })
     .then(function(response) {
       if(response.data != "null") {
+        // Setting a cookie
+        $cookies.put('idPatrocinador',response.data.idPatrocinador);
         $state.go('inicio');
       }
     })
@@ -31,7 +33,10 @@ angular.module('app.controllers', [])
     });
   }
 })
-   
+
+.controller('historialCtrl', function($scope) {
+})   
+
 .controller('bienvenidoCtrl', function($scope) {
 
 })
@@ -79,34 +84,63 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('administrarEventosCtrl', function($http, $scope, $state) {
+.controller('administrarEventosCtrl', function($http, $cookies,$scope, $state) {
   //create event
   $scope.Evento = {};
   $scope.change_latResult = "";
+  var patrocinadorCookie = $cookies.get('idPatrocinador');
+  if(patrocinadorCookie){
+    console.log(patrocinadorCookie);
+    $scope.Evento.Patrocinador_idPatrocinador = patrocinadorCookie;
+  }else{
+    $state.go('patrocinador');
+  }
   $scope.change_coords = function() {
-    console.log('entre ctm');
     $scope.Evento.latitude = $scope.latitude;
     $scope.Evento.longitude = $scope.longitude;
-    /*var appElement = angular(document.querySelector('input[id=latitude]'));
-    appElement.attr('initial-value', '');
-    appElement.attr('value', '2');*/
-    console.log($scope.latitude);
-    //$scope.Evento=$scope.Evento.push({latitude: 5});
+  };
+  $scope.convertDate = function() {
+    var date = $scope.start_event;
+    var year = date.getFullYear();
+    var month = (date.getMonth()+1);
+    var day = date.getDate();
+    var hour = date.getHours();
+    var min = date.getMinutes();
+    var sec = date.getSeconds();
+    if(month<10){
+      month = '0'+month;
+    }
+    if(day<10){
+      day = '0'+day;
+    }
+    if(hour<10){
+      hour = '0'+hour;
+    }
+    if(min<10){
+      min = '0'+min;
+    }
+    if(sec<10){
+      sec = '0'+sec;
+    }
+    datevalues = year + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec ;
+    //console.log(datevalues);
+    $scope.Evento.start_event = ""+datevalues+"";
+   /* console.log($scope.Evento.start_event);
+    console.log($scope.Evento.address);
+    console.log($scope.Evento.Categoria_idCategoria);*/
   };
 
   $scope.submit = function() {
     $http({
       method: 'POST',
-      url: 'http://localhost/tap/divertrip/index.php?r=evento/create',
+      url: 'http://192.168.0.13/tap/divertrip/index.php?r=evento/create',
       data: $scope.Evento,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     })
     .then(function(response) {
-      /*
       if(response.data.success == true) {
         $state.go('historial');
       }
-      */
       console.log($scope.Evento);
       /*
         else{
@@ -151,10 +185,6 @@ angular.module('app.controllers', [])
   
 })   
 .controller('contrasenaCtrl', function($scope) {
-
-})
-   
-.controller('historialCtrl', function($scope) {
 
 })
    

@@ -1,16 +1,11 @@
-<ion-view title="ADMINISTRAR EVENTOS">
+<ion-view title="CREAR EVENTO">
     <ion-content padding="true" class="has-header">
         <button class="button icon-left button-icon ion-navicon-round" ui-sref="menuPatrocinador"></button>
 
         <form name="formCreateEvent" ng-controller="administrarEventosCtrl" class="list">
             <label class="item item-input">
-                <span class="input-label">Patrocinador</span>
-                <input ng-model="Evento.Patrocinador_idPatrocinador" name="Evento[Patrocinador_idPatrocinador]"type="text" placeholder="Ingrese nombre del patrocinador" >
-            </label>
-
-            <label class="item item-input">
                 <span class="input-label">Nombre</span>
-                <input ng-model="Evento.name_event" name="Evento[name_event]"type="text" placeholder="Ingrese nombre del evento" >
+                <input ng-model="Evento.name_event" type="text" placeholder="Ingrese nombre del evento" >
             </label>
             
             <div class="spacer" style="width: 300px; height: 12px;"></div>
@@ -51,7 +46,8 @@
             
             <label class="item item-input">
                 <span class="input-label">Inicio</span>
-                <input ng-model="Evento.start_event" type="date" placeholder="Ingrese fecha de inicio del evento">
+                <input ng-model="start_event" ng-change="convertDate()"type="datetime-local" placeholder="Ingrese fecha de inicio del evento">
+                <input style="display: none" type="text" ng-model="Evento.start_event" />
             </label>
 
             <div class="spacer" style="width: 300px; height: 12px;"></div>
@@ -61,6 +57,9 @@
                 <input ng-model="Evento.image" type="text" placeholder="">
             </label>
 
+            <div class="spacer" style="width: 300px; height: 12px;"></div>
+            
+                        
             <div class="spacer" style="width: 300px; height: 12px;"></div>
 
             <input type="submit" class="button button-positive button-block icon-right ion-chevron-right" value="Guardar" ng-click="submit(formCreateEvent)" />
