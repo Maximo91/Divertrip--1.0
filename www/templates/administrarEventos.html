@@ -1,48 +1,68 @@
-<ion-view title="ADMINISTRAR EVENTOS">
+<ion-view title="CREAR EVENTO">
     <ion-content padding="true" class="has-header">
         <button class="button icon-left button-icon ion-navicon-round" ui-sref="menuPatrocinador"></button>
 
-        <form class="list">
+        <form name="formCreateEvent" ng-controller="administrarEventosCtrl" class="list">
             <label class="item item-input">
-                <span class="input-label">Nombre Evento</span>
-                <input type="text" placeholder="Ingrese nombre del evento...">
+                <span class="input-label">Nombre</span>
+                <input ng-model="Evento.name_event" type="text" placeholder="Ingrese nombre del evento" >
             </label>
+            
             <div class="spacer" style="width: 300px; height: 12px;"></div>
-            <label class="item item-select">
-                <span class="input-label">Categoría Evento</span>
-                <select>
-                    <option selected>Musica</option>
-                    <option>Talleres</option>
-                    <option>Cultural</option>
+            
+            <label class="item item-input item-select" ng-controller="listarCategorias">
+                <span class="input-label">Categoría</span>
+                <select ng-model="Evento.Categoria_idCategoria" ng-options="obj.idCategoria as obj.name for obj in Categoria_idCategoria">
                 </select>
             </label>
+            
             <div class="spacer" style="width: 300px; height: 12px;"></div>
+            
             <label class="item item-input">
-                <input type="text" placeholder="Ingrese breve descripción del evento...">
+                <span class="input-label">Descripción</span>
+                <input ng-model="Evento.description_event" type="text" placeholder="Ingrese breve descripción del evento" >
             </label>
+            
             <div class="spacer" style="width: 300px; height: 12px;"></div>
+            
             <label class="item item-input">
-                <span class="input-label">Lugar Evento</span>
-                <input type="text" placeholder="Ingrese lugar del evento...">
+                <span class="input-label">Lugar</span>
+                <input ng-autocomplete ng-model="Evento.address" id="Autocomplete" type="text" ng-change="change_coords()" ng-click="change_coords()" ng-selected="change_coords()" placeholder="Dirección del evento">
             </label>
+            <label class="item item-input" style="display: none">
+                <span class="input-label">Latitud</span>
+                <input type="text" ng-change="change_coords()" ng-model="latitude"/>
+                <span class="input-label">Evento.Latitud</span>
+                <input type="text" ng-model="Evento.latitude" />
+            </label>
+            <label class="item item-input" style="display: none">
+                <span class="input-label">Longitud</span>
+                <input type="text" ng-change="change_coords()" ng-model="longitude" />
+                <span class="input-label">Evento.Longitud</span>
+                <input type="text" ng-model="Evento.longitude" />
+            </label>
+            
             <div class="spacer" style="width: 300px; height: 12px;"></div>
+            
             <label class="item item-input">
-                <span class="input-label">Fecha</span>
-                <input type="date" placeholder="">
+                <span class="input-label">Inicio</span>
+                <input ng-model="start_event" ng-change="convertDate()"type="datetime-local" placeholder="Ingrese fecha de inicio del evento">
+                <input style="display: none" type="text" ng-model="Evento.start_event" />
             </label>
+
             <div class="spacer" style="width: 300px; height: 12px;"></div>
-            <label class="item item-select">
-                <span class="input-label">Hora</span>
-                <select></select>
-            </label>
-            <h4>Precio</h4>
-            <ion-checkbox>Liberado</ion-checkbox>
+
             <label class="item item-input">
-                <span class="input-label">Ingrese Monto</span>
-                <input type="text" placeholder="$">
+                <span class="input-label">Url Imagen</span>
+                <input ng-model="Evento.image" type="text" placeholder="">
             </label>
-            <div class="spacer" style="width: 300px; height: 35px;"></div>
-            <a href="#/page5" class="button button-balanced button-block ">Guardar</a>
+
+            <div class="spacer" style="width: 300px; height: 12px;"></div>
+            
+                        
+            <div class="spacer" style="width: 300px; height: 12px;"></div>
+
+            <input type="submit" class="button button-positive button-block icon-right ion-chevron-right" value="Guardar" ng-click="submit(formCreateEvent)" />
         </form>
     </ion-content>
 </ion-view>
