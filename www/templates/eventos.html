@@ -1,5 +1,5 @@
 <ion-view title="EVENTOS">
-    <ion-content padding="true" class="has-header">
+    <ion-content padding="true" class="has-header" ng-controller="eventosCtrl">
         <button class="button icon-left button-icon ion-navicon-round" ui-sref="menu"></button>
         <form class="list">
             <label class="item item-input">
@@ -21,31 +21,18 @@
                 </select>
             </label>
             <div class="spacer" style="width: 300px; height: 13px;"></div>
-            <ion-item class="item-thumbnail-left">
-                <img src="img/shamanes.jpg">
-                <h2>ShamanesCrew</h2>
-                <p>Música / Bar-L</p>
-            </ion-item>
-            <ion-item class="item-thumbnail-left">
-                <img src="img/movimiento.jpg">
-                <h2>Movimiento Original</h2>
-                <p>Música / Valparaíso</p>
-            </ion-item>
-            <ion-item class="item-thumbnail-left">
-                <img src="img/episodio_4.png">
-                <h2>Star Wars IV - Una Nueva Esperanza</h2>
-                <p>Cine / Teatro Valparaíso</p>
-            </ion-item>
-            <ion-item class="item-thumbnail-left">
-                <img src="img/episodio_5.png">
-                <h2>Star Wars V - El Imperio Contra - Ataca</h2>
-                <p>Cine / Teatro Valparaíso</p>
-            </ion-item>
-            <ion-item class="item-thumbnail-left">
-                <img src="img/episodio_6.jpg">
-                <h2>Star Wars VI - El Regreso del Jedi</h2>
-                <p>Cine / Teatro Valparaíso</p>
-            </ion-item>
+            <div ng-model="evento">
+            <ion-list ng-repeat="ev in evento">
+                <ion-item class="item-divider">{{ev.name_event}}</ion-item>
+                <ion-item class="item-thumbnail-left">
+                    <img src="{{his.image}}">
+                    <p><b>Tipo:</b> <i>{{ev.Categoria_idCategoria}}</i></p>
+                    <p><b>Dia del evento:</b> {{ev.start_event}}</p>
+                    <p><b>Lugar del evento:</b> {{ev.address}}</p>
+                    <p><b>Descripción:</b> {{ev.description_event}}</p>
+                </ion-item>
+            </ion-list>
+        </div>
         </form>
     </ion-content>
 </ion-view>

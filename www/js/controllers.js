@@ -25,7 +25,7 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('patrocinadorCtrl', function($scope, $cookies, $http, $state, $ionicPopup) {
+.controller('patrocinadorCtrl', function($scope, $cookies, localStorageService ,$http, $state, $ionicPopup) {
 
   $scope.submit = function(form) {
     $http({
@@ -41,6 +41,8 @@ angular.module('app.controllers', [])
     .then(function(response) {
       if(response.data != "null") {
         // Setting a cookie
+        localStorageService.set('idPatrocinador',response.data.idPatrocinador);
+        console.log("storage"+localStorageService.get('idPatrocinador'));
         $cookies.put('idPatrocinador',response.data.idPatrocinador);
         $state.go('inicio');
       }else{
@@ -56,7 +58,29 @@ angular.module('app.controllers', [])
   }
 })
 
-.controller('historialCtrl', function($scope) {
+.controller('historialCtrl', function($scope, localStorageService, $cookies, $http, $state) {
+  $http({
+      method: 'GET',
+      url: 'http://192.168.0.13/tap/divertrip/index.php',
+      params: {
+        r: 'evento/getEventsListByPartner',
+        id_Patrocinador: localStorageService.get('idPatrocinador'),
+      },
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(function(response) {
+      if(response != "null") {
+        console.log("historial");
+        /*for (var i=response.length-1;i>= 0;i--) {
+          $scope.historial = response.data[i];
+        };*/
+        $scope.historial = response.data;
+      }
+    })
+    .catch(function(err) {
+      console.log('Error');
+      console.log(err);
+    });
 })   
    
 .controller('bienvenidoCtrl', function($scope, $ionicPopup) {
@@ -103,9 +127,29 @@ angular.module('app.controllers', [])
     	};
 })
    
-.controller('eventosCtrl', function($scope) {
-
-})
+.controller('eventosCtrl', function($scope, localStorageService, $cookies, $http, $state) {
+  $http({
+      method: 'GET',
+      url: 'http://192.168.0.13/tap/divertrip/index.php',
+      params: {
+        r: 'evento/getEventsList',
+      },
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(function(response) {
+      if(response != "null") {
+        console.log("evento");
+        /*for (var i=response.length-1;i>= 0;i--) {
+          $scope.historial = response.data[i];
+        };*/
+        $scope.evento = response.data;
+      }
+    })
+    .catch(function(err) {
+      console.log('Error');
+      console.log(err);
+    });
+})   
    
 .controller('mapaCtrl', function($scope, $ionicLoading,$http, $state) {
 
@@ -113,9 +157,9 @@ angular.module('app.controllers', [])
     $scope.map = map;
     $http({
       method: 'GET',
-      url: 'http://localhost:8080/divertrip-backend-master/index.php',
+      url: 'http://192.168.0.13/tap/divertrip/index.php',
       params: {
-        r: 'LugarEmblematico/GetEventsList',
+        r: 'lugarEmblematico/getEmblematicoList',
         idLugar_Emblematico: $scope.idLugar_Emblematico,
         nombre: $scope.nombre,
         description: $scope.description,
@@ -153,7 +197,7 @@ angular.module('app.controllers', [])
     //eventos
     $http({
       method: 'GET',
-      url: 'http://localhost:8080/divertrip-backend-master/index.php',
+      url: 'http://192.168.0.13/tap/divertrip/index.php',
       params: {
         r: 'Evento/GetEventsList',
         idEvento: $scope.idEvento,
@@ -197,17 +241,16 @@ angular.module('app.controllers', [])
       console.log(response.length);
     });
     //fin eventos
-
   };
 
-    function attachSecretMessage(marker, secretMessage) {
-      var infowindow = new google.maps.InfoWindow({
-        content: secretMessage
-      });
-      marker.addListener('click', function() {
-        infowindow.open(marker.get('map'), marker);
-      });
-    };
+  function attachSecretMessage(marker, secretMessage) {
+    var infowindow = new google.maps.InfoWindow({
+      content: secretMessage
+    });
+    marker.addListener('click', function() {
+      infowindow.open(marker.get('map'), marker);
+    });
+  };
 
   $scope.centerOnMe = function () {
     console.log("Centering");
@@ -231,7 +274,7 @@ angular.module('app.controllers', [])
         icon: {url:'img/icono_gps.png'}
       });
 //ver problema de temporalidad del marker ya que genera muchos marker
-    $scope.loading.hide();
+    $scope.loading = $ionicLoading.hide();
     },function (error) {
       alert('Unable to get location: ' + error.message);
     });
@@ -306,17 +349,14 @@ angular.module('app.controllers', [])
 	};
 })
    
-.controller('administrarEventosCtrl', function($http,$cookies,$scope, $state) {
+.controller('administrarEventosCtrl', function($http,localStorageService,$cookies,$scope, $state) {
   //create event
   $scope.Evento = {};
   $scope.change_latResult = "";
-  var patrocinadorCookie = $cookies.get('idPatrocinador');
-  if(patrocinadorCookie){
-    console.log(patrocinadorCookie);
-    $scope.Evento.Patrocinador_idPatrocinador = patrocinadorCookie;
-  }else{
-    $state.go('patrocinador');
-  }
+  var patrocinadorStorage = localStorageService.get('idPatrocinador');
+  $scope.Evento.Patrocinador_idPatrocinador = patrocinadorStorage;
+  //}
+
   $scope.change_coords = function() {
     $scope.Evento.latitude = $scope.latitude;
     $scope.Evento.longitude = $scope.longitude;
