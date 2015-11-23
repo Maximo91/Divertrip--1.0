@@ -61,7 +61,7 @@ angular.module('app.controllers', [])
 .controller('historialCtrl', function($scope, localStorageService, $cookies, $http, $state) {
   $http({
       method: 'GET',
-      url: 'http://192.168.0.13/tap/divertrip/index.php',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
       params: {
         r: 'evento/getEventsListByPartner',
         id_Patrocinador: localStorageService.get('idPatrocinador'),
@@ -130,7 +130,7 @@ angular.module('app.controllers', [])
 .controller('eventosCtrl', function($scope, localStorageService, $cookies, $http, $state) {
   $http({
       method: 'GET',
-      url: 'http://192.168.0.13/tap/divertrip/index.php',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
       params: {
         r: 'evento/getEventsList',
       },
@@ -157,7 +157,7 @@ angular.module('app.controllers', [])
     $scope.map = map;
     $http({
       method: 'GET',
-      url: 'http://192.168.0.13/tap/divertrip/index.php',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
       params: {
         r: 'lugarEmblematico/getEmblematicoList',
         idLugar_Emblematico: $scope.idLugar_Emblematico,
@@ -197,7 +197,7 @@ angular.module('app.controllers', [])
     //eventos
     $http({
       method: 'GET',
-      url: 'http://192.168.0.13/tap/divertrip/index.php',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
       params: {
         r: 'Evento/GetEventsList',
         idEvento: $scope.idEvento,
@@ -395,7 +395,7 @@ angular.module('app.controllers', [])
   $scope.submit = function() {
     $http({
       method: 'POST',
-      url: 'http://192.168.0.13/tap/divertrip/index.php?r=evento/create',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php?r=evento/create',
       data: $scope.Evento,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     })
@@ -446,8 +446,43 @@ angular.module('app.controllers', [])
 
   
 })   
-.controller('contrasenaCtrl', function($scope) {
-
+.controller('contrasenaCtrl', function($scope, localStorageService, $cookies,
+  $http, $state, $ionicPopup){
+  $scope.submit = function(form){
+    if($scope.new_password!=$scope.new_password_repeat){
+      var confirmPopup = $ionicPopup.alert({
+        title: 'ERROR',
+        template: 'Las claves no son iguales',
+      });
+    }else{
+      $http({
+          method: 'GET',
+          url: 'http://divertrip.miguelgonzaleza.com/index.php',
+          params: {
+            r: 'login/setNewPassword',
+            id_Patrocinador: localStorageService.get('idPatrocinador'),
+            passwd:$scope.actual_password,
+            newpasswd:$scope.new_password,
+          },
+          headers: {'Content-Type': 'application/json'}
+        })
+        .then(function(response) {
+          console.log(response);
+          if(response.data == '"success"') {
+            $state.go('menuPatrocinador');
+          }else{
+            var confirmPopup = $ionicPopup.alert({
+            title: 'ERROR',
+            template: 'La clave actual es incorrecta',
+            });
+          }
+        })
+      .catch(function(err) {
+        console.log('Error');
+        console.log(err);
+      });
+    }
+  }
 })
    
 .controller('reestablecerCtrl', function($scope) {
