@@ -4,21 +4,21 @@
         <form name="formularioCon" class="list" ng-controller="contrasenaCtrl">
             <div class="spacer" style="width: 300px; height: 24px;"></div>
             <label class="item item-input">
-                <span class="input-label">Ingrese Contraseña Actual</span>
+                <span class="input-label">Contraseña Actual</span>
                 <input ng-model="actual_password" type="password" placeholder="">
             </label>
             <div class="spacer" style="width: 300px; height: 24px;"></div>
             <label class="item item-input">
-                <span class="input-label">Ingrese Nueva Contraseña</span>
+                <span class="input-label">Nueva Contraseña</span>
                 <input ng-model="new_password" type="password" placeholder="">
             </label>
             <div class="spacer" style="width: 300px; height: 24px;"></div>
             <label class="item item-input">
-                <span class="input-label">Confirme Nueva Contraseña</span>
+                <span class="input-label">Repita Contraseña</span>
                 <input ng-model="new_password_repeat" type="password" placeholder="">
             </label>
        
-            <input type="submit" class="button button-positive button-block icon-right ion-chevron-right" value="Iniciar sesión" ng-click="submit(formularioCon)"/>
+            <input type="submit" class="button button-positive button-block icon-right ion-chevron-right" value="Cambiar contraseña" ng-click="submit(formularioCon)"/>
         </form>
     </ion-content>
 </ion-view>

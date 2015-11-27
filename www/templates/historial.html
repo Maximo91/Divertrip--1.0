@@ -1,20 +1,25 @@
-<ion-view title="HISTORIAL">
+<ion-view title="Historial">
+    <ion-nav-buttons side="right">
+      <button class="button icon-left button-icon ion-navicon-round" ui-sref="menuPatrocinador"></button>
+    </ion-nav-buttons>
+
     <ion-content padding="true" class="has-header" ng-controller="historialCtrl">
-        <button class="button icon-left button-icon ion-navicon-round" ui-sref="menuPatrocinador"></button>
         <ion-list></ion-list>
         <a ui-sref="administrarEventos" class="button button-block button-balanced icon-right ion-android-add">Añadir</a>
         <div class="spacer" style="width: 300px; height: 13px;"></div>
         <div ng-model="historial">
             <ion-list ng-repeat="his in historial">
                 <ion-item class="item-divider">{{his.name_event}}</ion-item>
-                <ion-item class="item-thumbnail-left">
+                <ion-item name={{his.idEvento}} class="item-thumbnail-left">
                     <img src="{{his.image}}">
                     <p><b>Tipo:</b> <i>{{his.Categoria_idCategoria}}</i></p>
                     <p><b>Dia del evento:</b> {{his.start_event}}</p>
                     <p><b>Lugar del evento:</b> {{his.address}}</p>
                     <p><b>Descripción:</b> {{his.description_event}}</p>
+                    <input ng-controller="verEventoCtrl" type="submit" class="button button-small button-light col col-33 col-offset-67" value="Ver más" ng-click="prueba({{his.idEvento}})" ui-sref="verEvento"/>
                 </ion-item>
             </ion-list>
+            
         </div>
     </ion-content>
 </ion-view>

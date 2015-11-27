@@ -1,0 +1,24 @@
+<ion-view title="Información Evento">
+    <ion-nav-buttons side="right">
+      <button class="button icon-left button-icon ion-navicon-round" ui-sref="menuPatrocinador"></button>
+    </ion-nav-buttons>
+    <ion-content padding="true" class="has-header" ng-controller="verEventoCtrl">
+    	<div class="list card">
+	    	<div ng-controller="dataCtrl" class="item item-avatar">
+	    		<img src="{{ev.image}}">
+		    	<h2>{{ev.name_event}}</h2>
+		    	<p>{{ev.description_event}}</p>
+		    	<p>{{ev.address}}</p>
+		    	<p>{{ev.start_event}}</p>
+		    </div>
+		    <div item item-image>
+	        	<ng-map data-tap-disabled="true" zoom="16"></ng-map>
+	        </div>
+
+	        <div class="item item-icon-left assertive">
+	        	<input  type="submit" class="col col-33 col-offset-67 button button-small button-assertive" value="Eliminar evento"/>
+	        </div>
+	       
+		</div>
+    </ion-content>
+</ion-view>

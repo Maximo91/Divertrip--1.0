@@ -25,8 +25,8 @@ angular.module('app.controllers', [])
 
 })
    
-.controller('patrocinadorCtrl', function($scope, $cookies, localStorageService ,$http, $state, $ionicPopup) {
-
+.controller('patrocinadorCtrl', function($scope, localStorageService,
+  $http, $state, $ionicPopup) {
   $scope.submit = function(form) {
     $http({
       method: 'GET',
@@ -42,8 +42,6 @@ angular.module('app.controllers', [])
       if(response.data != "null") {
         // Setting a cookie
         localStorageService.set('idPatrocinador',response.data.idPatrocinador);
-        console.log("storage"+localStorageService.get('idPatrocinador'));
-        $cookies.put('idPatrocinador',response.data.idPatrocinador);
         $state.go('inicio');
       }else{
        var confirmPopup = $ionicPopup.alert({
@@ -58,10 +56,10 @@ angular.module('app.controllers', [])
   }
 })
 
-.controller('historialCtrl', function($scope, localStorageService, $cookies, $http, $state) {
+.controller('historialCtrl', function($scope, localStorageService, $http, $state) {
   $http({
       method: 'GET',
-      url: 'http://divertrip.miguelgonzaleza.com/index.php',
+      url: 'http://192.168.0.9/tap/divertrip/index.php',
       params: {
         r: 'evento/getEventsListByPartner',
         id_Patrocinador: localStorageService.get('idPatrocinador'),
@@ -71,9 +69,6 @@ angular.module('app.controllers', [])
     .then(function(response) {
       if(response != "null") {
         console.log("historial");
-        /*for (var i=response.length-1;i>= 0;i--) {
-          $scope.historial = response.data[i];
-        };*/
         $scope.historial = response.data;
       }
     })
@@ -82,7 +77,71 @@ angular.module('app.controllers', [])
       console.log(err);
     });
 })   
-   
+
+.controller('verEventoCtrl',function($scope,$state, localStorageService,
+  $http, NgMap){
+  $scope.prueba = function(id){
+    localStorageService.set('idEvento',id);
+    $http({
+      method: 'GET',
+      url: 'http://192.168.0.9/tap/divertrip/index.php',
+      params: {
+        r: 'evento/viewEvent',
+        id_Evento:id,
+        id_Patrocinador: localStorageService.get('idPatrocinador'),
+      },
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(function(response) {
+      if(response != "null") {
+        //console.log(response.data);
+        NgMap.getMap().then(function(map) {
+          var marker = new google.maps.Marker({ title: "Marker: "});
+          var infowindow = new google.maps.InfoWindow({content: 
+            response.data.name_event});
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map,marker);
+          });
+          var lat = response.data.latitude;
+          var lng = response.data.longitude;
+          var loc = new google.maps.LatLng(lat, lng);
+          marker.setPosition(loc);
+          marker.setMap(map);
+          map.setCenter(loc);
+        });
+      }
+    })
+    .catch(function(err) {
+      console.log('Error');
+      console.log(err);
+    });
+  }
+})
+
+.controller('dataCtrl',function($scope,$state, localStorageService,
+  $http){
+   $http({
+      method: 'GET',
+      url: 'http://192.168.0.9/tap/divertrip/index.php',
+      params: {
+        r: 'evento/viewEvent',
+        id_Evento:localStorageService.get('idEvento'),
+        id_Patrocinador: localStorageService.get('idPatrocinador'),
+      },
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(function(response) {
+      if(response != "null") {
+        console.log("historial");
+        $scope.ev = response.data;
+      }
+    })
+    .catch(function(err) {
+      console.log('Error');
+      console.log(err);
+    });
+})
+
 .controller('bienvenidoCtrl', function($scope, $ionicPopup) {
   
     	$scope.salir = function() {
@@ -127,7 +186,7 @@ angular.module('app.controllers', [])
     	};
 })
    
-.controller('eventosCtrl', function($scope, localStorageService, $cookies, $http, $state) {
+.controller('eventosCtrl', function($scope, localStorageService, $http, $state) {
   $http({
       method: 'GET',
       url: 'http://divertrip.miguelgonzaleza.com/index.php',
@@ -139,9 +198,6 @@ angular.module('app.controllers', [])
     .then(function(response) {
       if(response != "null") {
         console.log("evento");
-        /*for (var i=response.length-1;i>= 0;i--) {
-          $scope.historial = response.data[i];
-        };*/
         $scope.evento = response.data;
       }
     })
@@ -287,9 +343,9 @@ angular.module('app.controllers', [])
 })
    
 .controller('preferenciasCtrl', function($scope) {
-	  $scope.settings = {
-    	recibirnotificaciones: true
-};
+	$scope.settings = {
+  	recibirnotificaciones: true
+  };
 
 })
    
@@ -349,7 +405,8 @@ angular.module('app.controllers', [])
 	};
 })
    
-.controller('administrarEventosCtrl', function($http,localStorageService,$cookies,$scope, $state) {
+.controller('administrarEventosCtrl', function($http,localStorageService,
+  $scope, $state, $ionicPopup) {
   //create event
   $scope.Evento = {};
   $scope.change_latResult = "";
@@ -395,20 +452,20 @@ angular.module('app.controllers', [])
   $scope.submit = function() {
     $http({
       method: 'POST',
-      url: 'http://divertrip.miguelgonzaleza.com/index.php?r=evento/create',
+      url: 'http://192.168.0.9/tap/divertrip/index.php?r=evento/create',
       data: $scope.Evento,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     })
     .then(function(response) {
       if(response.data.success == true) {
         $state.go('historial');
+      }else{
+        var confirmPopup = $ionicPopup.alert({
+          title: 'ERROR',
+          template: 'Debe llenar todos los datos',
+        });
+        $state.go('adminitrarEventos');
       }
-      console.log($scope.Evento);
-      /*
-        else{
-          pop up mono
-        }
-      */
     })
     .catch(function(err) {
       console.log('Error');
@@ -441,12 +498,8 @@ angular.module('app.controllers', [])
     });
 
 })
-
-.controller('MapController', function($scope, $ionicLoading) {
-
-  
-})   
-.controller('contrasenaCtrl', function($scope, localStorageService, $cookies,
+ 
+.controller('contrasenaCtrl', function($scope, localStorageService,
   $http, $state, $ionicPopup){
   $scope.submit = function(form){
     if($scope.new_password!=$scope.new_password_repeat){
