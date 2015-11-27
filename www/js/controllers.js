@@ -27,6 +27,9 @@ angular.module('app.controllers', [])
    
 .controller('patrocinadorCtrl', function($scope, localStorageService,
   $http, $state, $ionicPopup) {
+  if(localStorageService.get('idPatrocinador')){
+    $state.go('inicio');
+  }
   $scope.submit = function(form) {
     $http({
       method: 'GET',
@@ -352,8 +355,6 @@ angular.module('app.controllers', [])
       content: 'Getting current location...',
       showBackdrop: false
     });
-    
- 
     
     navigator.geolocation.getCurrentPosition(function (pos) {
       console.log('Got pos', pos);
