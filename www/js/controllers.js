@@ -135,6 +135,9 @@ angular.module('app.controllers', [])
       if(response != "null") {
         console.log("historial");
         $scope.ev = response.data;
+        console.log($scope.ev.image);
+        if($scope.ev.image==null)
+          $scope.ev.image="img/movil.png";
       }
     })
     .catch(function(err) {
@@ -393,26 +396,32 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('inicioCtrl', function($scope, $ionicPopup) {
-  
-    	$scope.salir = function() {
-    	var confirmPopup = $ionicPopup.confirm({
-    	title: 'La aplicación se cerrara.',
-    	template: ' ¿Desea continuar ?',
-    	buttons:[
-    	{text:'NO', 
+.controller('inicioCtrl', function($scope, $ionicPopup, localStorageService,
+  $state) {
+  $scope.logout = function(){
+    localStorageService.remove('idPatrocinador');
+    $state.go('dIVERTRIP');
+  };
+	$scope.salir = function() {
+  	var confirmPopup = $ionicPopup.confirm({
+      title: 'La aplicación se cerrara.',
+      template: ' ¿Desea continuar ?',
+      buttons:[
+      {text:'NO', 
         onTap:function(e){
-       	return true; 
-       	}
-       	},
-        {text: 'SI', 
+      	 return true; 
+      	}
+      },
+      {text: 'SI', 
         type: 'button-positive',
-       	onTap: function(e){
-       	ionic.Platform.exitApp();
-       	return true; 
-       	}
-        }]});
-	};
+      	onTap: function(e){
+      	 ionic.Platform.exitApp();
+      	 return true; 
+      	}
+      }
+      ]
+    });
+  };
 })
    
 .controller('menuPatrocinadorCtrl', function($scope, $ionicPopup) {
@@ -534,11 +543,21 @@ angular.module('app.controllers', [])
 .controller('contrasenaCtrl', function($scope, localStorageService,
   $http, $state, $ionicPopup){
   $scope.submit = function(form){
+    console.log($scope.actual_password);
+    if(typeof $scope.actual_password==='undefined' || 
+      typeof $scope.new_password ==='undefined'|| 
+      typeof $scope.new_password_repeat ==='undefined'){
+      var confirmPopup = $ionicPopup.alert({
+        title: 'ERROR',
+        template: 'Debe llenar todos los campos',
+      });
+    }
     if($scope.new_password!=$scope.new_password_repeat){
       var confirmPopup = $ionicPopup.alert({
         title: 'ERROR',
         template: 'Las claves no son iguales',
       });
+
     }else{
       $http({
           method: 'GET',
@@ -554,6 +573,10 @@ angular.module('app.controllers', [])
         .then(function(response) {
           console.log(response);
           if(response.data == '"success"') {
+            var confirmPopup = $ionicPopup.alert({
+              title: 'Noticia',
+              template: 'Contraseña cambiada con éxito',
+            });
             $state.go('menuPatrocinador');
           }else{
             var confirmPopup = $ionicPopup.alert({

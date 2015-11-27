@@ -1,4 +1,4 @@
-<ion-view title="INICIO">
+<ion-view title="Menu patrocinador">
     <ion-content padding="true" class="has-header">
         <ion-list>
             <button class="button icon-left button-full button-stable button-icon ion-ios-cog" ui-sref="administrarEventos">CREAR EVENTO</button>
@@ -7,7 +7,7 @@
             <br>
             <button class="button icon-left button-full button-stable button-icon ion-folder" ui-sref="historial">HISTORIAL</button>
             <br>
-            <button class="button icon-left button-full button-stable button-icon ion-ios-undo" ui-sref="divertrip">CERRAR SESION</button>
+            <button class="button icon-left button-full button-stable button-icon ion-ios-undo" ng-click="logout()">CERRAR SESION</button>
             <br>
             <button class="button icon-left button-full button-stable button-icon ion-ios-close" ng-click="salir()">SALIR</button>
         </ion-list>
