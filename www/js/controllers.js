@@ -246,102 +246,108 @@ angular.module('app.controllers', [])
 })   
    
 .controller('mapaCtrl', function($scope, $ionicLoading,$http, $state) {
-
+  var infomarker=false;
+  
   $scope.mapCreated = function(map) {
     $scope.map = map;
-    $http({
-      method: 'GET',
-      url: 'http://divertrip.miguelgonzaleza.com/index.php',
-      params: {
-        r: 'lugarEmblematico/getEmblematicoList',
-        idLugar_Emblematico: $scope.idLugar_Emblematico,
-        nombre: $scope.nombre,
-        description: $scope.description,
-        latitude: $scope.latitude,
-        longitude: $scope.longitude
-      }, 
-      headers: {'Content-Type': 'application/json'}
-      }).success(function(response){
-          var lat, longi, Titulo, myLatlng, Cuerpo, contentString, marker,infowindow;
-          for(var i=response.length-1;i>= 0;i--) {
-            lat = response[i].latitude;
-            longi = response[i].longitude;
-            console.log(lat);
-            console.log(longi);
-            myLatlng = new google.maps.LatLng(lat,longi);
-            marker = new google.maps.Marker({
-                 position: myLatlng,
-                 map: map,
-                 icon: {url:'img/marker.png'}
-            });
-            Titulo = response[i].nombre;
-            Cuerpo = response[i].description; 
-            contentString = 
-                '<div id="content">'+
-                '<div id="siteNotice"></div>'+
-                '<h1 id="firstHeading" class="firstHeading">'+Titulo+'</h1>'+
-                '<div id="bodyContent">'+
-                '<p>'+Cuerpo+'</p>'+
-                '</div>'+
-                '</div>';
-                attachSecretMessage(marker, contentString);
-          };
-      console.log(response.length);
-    });
+    $scope.showEmblematicos = function() {
+      $http({
+        method: 'GET',
+        url: 'http://divertrip.miguelgonzaleza.com/index.php',
+        params: {
+          r: 'lugarEmblematico/getEmblematicoList',
+          idLugar_Emblematico: $scope.idLugar_Emblematico,
+          nombre: $scope.nombre,
+          description: $scope.description,
+          latitude: $scope.latitude,
+          longitude: $scope.longitude
+        }, 
+        headers: {'Content-Type': 'application/json'}
+        }).success(function(response){
+            var lat, longi, Titulo, myLatlng, Cuerpo, contentString, marker,infowindow;
+            for(var i=response.length-1;i>= 0;i--) {
+              lat = response[i].latitude;
+              longi = response[i].longitude;
+              myLatlng = new google.maps.LatLng(lat,longi);
+              marker = new google.maps.Marker({
+                   position: myLatlng,
+                   map: map,
+                   icon: {url:'img/marker.png'}
+              });
+              Titulo = response[i].nombre;
+              Cuerpo = response[i].description; 
+              contentString = 
+                  '<div id="content">'+
+                  '<div id="siteNotice"></div>'+
+                  '<h1 id="firstHeading" class="firstHeading">'+Titulo+'</h1>'+
+                  '<div id="bodyContent">'+
+                  '<p>'+Cuerpo+'</p>'+
+                  '</div>'+
+                  '</div>';
+                  attachSecretMessage(marker, contentString);
+            };
+        console.log(response.length);
+      });
+    };
     //eventos
-    $http({
-      method: 'GET',
-      url: 'http://divertrip.miguelgonzaleza.com/index.php',
-      params: {
-        r: 'Evento/GetEventsList',
-        idEvento: $scope.idEvento,
-        name_event: $scope.name_event,
-        description_event: $scope.description_event,
-        date: $scope.date,
-        Categoria_idCategoria: $scope.Categoria_idCategoria,
-        Patrocinador_idPatrocinador: $scope.Patrocinador_idPatrocinador,
-        start_event: $scope.start_event,
-        image: $scope.image,
-        address: $scope.address,
-        latitude: $scope.latitude,
-        longitude: $scope.longitude
-      }, 
-      headers: {'Content-Type': 'application/json'}
-      }).success(function(response){
-          var lat, longi, Titulo, myLatlng, Cuerpo, contentString, marker,infowindow;
-          for(var i=response.length-1;i>= 0;i--) {
-            lat = response[i].latitude;
-            longi = response[i].longitude;
-            console.log(lat);
-            console.log(longi);
-            myLatlng = new google.maps.LatLng(lat,longi);
-            marker = new google.maps.Marker({
-                 position: myLatlng,
-                 map: map,
-                 icon: {url:'img/marker_evento.png'}
-            });
-            Titulo = response[i].name_event;
-            Cuerpo = response[i].description_event; 
-            contentString = 
-                '<div id="content">'+
-                '<div id="siteNotice"></div>'+
-                '<h1 id="firstHeading" class="firstHeading">'+Titulo+'</h1>'+
-                '<div id="bodyContent">'+
-                '<p>'+Cuerpo+'</p>'+
-                '</div>'+
-                '</div>';
-                attachSecretMessage(marker, contentString);
-          };
-      console.log(response.length);
-    });
+    $scope.showEventos = function() {
+      $http({
+        method: 'GET',
+        url: 'http://divertrip.miguelgonzaleza.com/index.php',
+        params: {
+          r: 'Evento/GetEventsList',
+          idEvento: $scope.idEvento,
+          name_event: $scope.name_event,
+          description_event: $scope.description_event,
+          date: $scope.date,
+          Categoria_idCategoria: $scope.Categoria_idCategoria,
+          Patrocinador_idPatrocinador: $scope.Patrocinador_idPatrocinador,
+          start_event: $scope.start_event,
+          image: $scope.image,
+          address: $scope.address,
+          latitude: $scope.latitude,
+          longitude: $scope.longitude
+        }, 
+        headers: {'Content-Type': 'application/json'}
+        }).success(function(response){
+            var lat, longi, Titulo, myLatlng, Cuerpo, contentString, marker,infowindow;
+            for(var i=response.length-1;i>= 0;i--) {
+              lat = response[i].latitude;
+              longi = response[i].longitude;
+              myLatlng = new google.maps.LatLng(lat,longi);
+              marker = new google.maps.Marker({
+                   position: myLatlng,
+                   map: map,
+                   icon: {url:'img/marker_evento.png'}
+              });
+              Titulo = response[i].name_event;
+              Cuerpo = response[i].description_event; 
+              contentString = 
+                  '<div id="content">'+
+                  '<div id="siteNotice"></div>'+
+                  '<h1 id="firstHeading" class="firstHeading">'+Titulo+'</h1>'+
+                  '<div id="bodyContent">'+
+                  '<p>'+Cuerpo+'</p>'+
+                  '</div>'+
+                  '</div>';
+                  attachSecretMessage(marker, contentString);
+            };
+        console.log(response.length);
+      });
+    };
     //fin eventos
   };
-
+  
+  
   function attachSecretMessage(marker, secretMessage) {
     var infowindow = new google.maps.InfoWindow({
       content: secretMessage
     });
     marker.addListener('click', function() {
+      if (infomarker){
+        infomarker.close();
+      }
+      infomarker = infowindow;
       infowindow.open(marker.get('map'), marker);
     });
   };
