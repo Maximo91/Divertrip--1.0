@@ -56,7 +56,8 @@ angular.module('app.controllers', [])
   }
 })
 
-.controller('historialCtrl', function($scope, localStorageService, $http, $state) {
+.controller('historialCtrl', function($scope, localStorageService,
+ $http, $state) {
   $http({
       method: 'GET',
       url: 'http://192.168.0.9/tap/divertrip/index.php',
@@ -140,6 +141,37 @@ angular.module('app.controllers', [])
       console.log('Error');
       console.log(err);
     });
+})
+
+.controller('eliminarEventoCtrl',function($scope,$state, localStorageService,
+  $http,$ionicPopup){
+  $scope.eliminar = function(){
+    $http({
+      method: 'GET',
+      url: 'http://192.168.0.9/tap/divertrip/index.php',
+      params: {
+        r: 'evento/deleteEvent',
+        id_Evento:localStorageService.get('idEvento'),
+        id_Patrocinador: localStorageService.get('idPatrocinador'),
+      },
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(function(response) {
+      console.log(response.data);
+      if(response.data == '"success"') {
+        var confirmPopup = $ionicPopup.alert({
+          title: 'Noticia',
+          template: 'Evento eliminado con exito',
+        });
+        $state.go('historial');   
+      }
+    })
+    .catch(function(err) {
+      console.log('Error');
+      console.log(err);
+    });
+  }
+
 })
 
 .controller('bienvenidoCtrl', function($scope, $ionicPopup) {
