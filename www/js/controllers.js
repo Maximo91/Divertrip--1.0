@@ -63,7 +63,7 @@ angular.module('app.controllers', [])
  $http, $state) {
   $http({
       method: 'GET',
-      url: 'http://192.168.0.9/tap/divertrip/index.php',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
       params: {
         r: 'evento/getEventsListByPartner',
         id_Patrocinador: localStorageService.get('idPatrocinador'),
@@ -88,7 +88,7 @@ angular.module('app.controllers', [])
     localStorageService.set('idEvento',id);
     $http({
       method: 'GET',
-      url: 'http://192.168.0.9/tap/divertrip/index.php',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
       params: {
         r: 'evento/viewEvent',
         id_Evento:id,
@@ -122,11 +122,77 @@ angular.module('app.controllers', [])
   }
 })
 
+.controller('verEventoPersonaCtrl',function($scope,$state, localStorageService,
+  $http, NgMap){
+  $scope.prueba = function(id){
+
+  console.log(id);
+    localStorageService.set('idEvento',id);
+    $http({
+      method: 'GET',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
+      params: {
+        r: 'evento/viewEventPerson',
+        id_Evento:id,
+      },
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(function(response) {
+      if(response != "null") {
+        console.log(response.data);
+        NgMap.getMap().then(function(map) {
+          var marker = new google.maps.Marker({ title: "Marker: "});
+          var infowindow = new google.maps.InfoWindow({content: 
+            response.data.name_event});
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map,marker);
+          });
+          var lat = response.data.latitude;
+          var lng = response.data.longitude;
+          var loc = new google.maps.LatLng(lat, lng);
+          marker.setPosition(loc);
+          marker.setMap(map);
+          map.setCenter(loc);
+        });
+      }
+    })
+    .catch(function(err) {
+      console.log('Error');
+      console.log(err);
+    });
+  }
+})
+
+.controller('dataPersonCtrl',function($scope,$state, localStorageService,
+  $http){
+   $http({
+      method: 'GET',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
+      params: {
+        r: 'evento/viewEventPerson',
+        id_Evento:localStorageService.get('idEvento'),
+      },
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(function(response) {
+      if(response != "null") {
+        console.log("historial");
+        $scope.ev = response.data;
+        console.log($scope.ev.image);
+        if($scope.ev.image==null)
+          $scope.ev.image="img/movil.png";
+      }
+    })
+    .catch(function(err) {
+      console.log('Error');
+      console.log(err);
+    });
+})
 .controller('dataCtrl',function($scope,$state, localStorageService,
   $http){
    $http({
       method: 'GET',
-      url: 'http://192.168.0.9/tap/divertrip/index.php',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
       params: {
         r: 'evento/viewEvent',
         id_Evento:localStorageService.get('idEvento'),
@@ -154,7 +220,7 @@ angular.module('app.controllers', [])
   $scope.eliminar = function(){
     $http({
       method: 'GET',
-      url: 'http://192.168.0.9/tap/divertrip/index.php',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
       params: {
         r: 'evento/deleteEvent',
         id_Evento:localStorageService.get('idEvento'),
@@ -225,6 +291,7 @@ angular.module('app.controllers', [])
 })
    
 .controller('eventosCtrl', function($scope, localStorageService, $http, $state) {
+  
   $http({
       method: 'GET',
       url: 'http://divertrip.miguelgonzaleza.com/index.php',
@@ -242,7 +309,8 @@ angular.module('app.controllers', [])
     .catch(function(err) {
       console.log('Error');
       console.log(err);
-    });
+    });/*
+    $scope.filtroEvento = null;*/
 })   
    
 .controller('mapaCtrl', function($scope, $ionicLoading,$http, $state) {
@@ -494,7 +562,7 @@ angular.module('app.controllers', [])
   $scope.submit = function() {
     $http({
       method: 'POST',
-      url: 'http://192.168.0.9/tap/divertrip/index.php?r=evento/create',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php?r=evento/create',
       data: $scope.Evento,
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     })
@@ -538,7 +606,6 @@ angular.module('app.controllers', [])
       console.log('Error');
       console.log(err);
     });
-
 })
  
 .controller('contrasenaCtrl', function($scope, localStorageService,

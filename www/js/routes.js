@@ -37,6 +37,12 @@ angular.module('app.routes', [])
       templateUrl:'templates/verEvento.html',
       controller: 'verEventoCtrl'
     })
+
+    .state('verEventoPersona', {
+      url:'/view_event',
+      templateUrl:'templates/verEventoPersona.html',
+      controller: 'verEventoPersonaCtrl'
+    })
         
     .state('contrasena', {
       url: '/page4',
