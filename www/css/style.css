@@ -10,3 +10,52 @@ map {
 .scroll {
   height: 100%;
 }
+
+@font-face {
+    font-family: 'OrangeJuice';
+    src: url('../fonts/orange_juice.ttf') format('truetype');
+}
+
+.divertrip-font {
+	font-family: OrangeJuice;
+	text-align: center;
+	font-size: 75px;
+}
+
+.ayuda-desc{
+	font-size: 13px;
+	font-color: #ccc;
+	font-family: 'Arial';
+	text-shadow: 4px 4px 2px rgba(150, 150, 150, 1);
+	font-weight: bold;
+}
+
+.ayuda-img{
+	margin-top: 4%;
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	width:300px
+}
+
+.font-menu{
+	text-transform: uppercase;
+}
+
+.color-evento{
+	color:#d82420;
+}
+
+.color-mapa{
+	color:#2043d8;
+}
+
+.color-ayuda{
+	color: #8aa0ff;
+}
+.color-play{
+	color: #49c6c5;
+}
+.color-salir{
+	color: #fa8700;
+}

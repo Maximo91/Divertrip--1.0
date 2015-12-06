@@ -9,83 +9,88 @@ angular.module('app.routes', [])
   $stateProvider
 
     .state('dIVERTRIP', {
-      url: '/page1',
+      url: '/bienvenido',
       templateUrl: 'templates/dIVERTRIP.html',
       controller: 'dIVERTRIPCtrl'
     })
     
     .state('inicio', {
-      url: '/page1',
+      url: '/menu_persona',
       templateUrl: 'templates/inicio.html',
       controller: 'inicioCtrl'
     })
         
-    .state('menuPatrocinador', {
-      url: '/page2',
+    /*.state('menuPatrocinador', {
+      url: '/menu_patrocinador',
       templateUrl: 'templates/menuPatrocinador.html',
       controller: 'menuPatrocinadorCtrl'
-    })
+    })*/
 
     .state('administrarEventos', {
-      url: '/page3',
+      url: '/crear_evento',
       templateUrl: 'templates/administrarEventos.html',
       controller: 'administrarEventosCtrl'
     })
+
+    .state('verEvento', {
+      url:'/informacion_evento',
+      templateUrl:'templates/verEvento.html',
+      controller: 'verEventoCtrl'
+    })
+
+    .state('verEventoPersona', {
+      url:'/ver_evento',
+      templateUrl:'templates/verEventoPersona.html',
+      controller: 'verEventoPersonaCtrl'
+    })
         
     .state('contrasena', {
-      url: '/page4',
+      url: '/cambiar_contrasena',
       templateUrl: 'templates/contrasena.html',
       controller: 'contrasenaCtrl'
     })
         
     .state('historial', {
-      url: '/page5',
+      url: '/historial',
       templateUrl: 'templates/historial.html',
       controller: 'historialCtrl'
     })
 
     .state('reestablecer', {
-      url: '/page6',
+      url: '/reestablecer_contrasena',
       templateUrl: 'templates/reestablecer.html',
       controller: 'reestablecerCtrl'
     })
 
     .state('personas', {
-      url: '/page2',
+      url: '/login_persona',
       templateUrl: 'templates/personas.html',
       controller: 'personasCtrl'
     })
 
     .state('patrocinador', {
-      url: '/page3',
+      url: '/login_patrocinador',
       templateUrl: 'templates/patrocinador.html',
       controller: 'patrocinadorCtrl'
     })
 
     .state('bienvenido', {
-      url: '/page4',
+      url: '/menu_patrocinador',
       templateUrl: 'templates/bienvenido.html',
       controller: 'bienvenidoCtrl'
     })
 
         
-    .state('menu', {
-      url: '/page5',
-      templateUrl: 'templates/menu.html',
-      controller: 'menuCtrl'
-    })
-        
-
-        
+  
     .state('eventos', {
-      url: '/page6',
+      url: '/ver_evento',
       templateUrl: 'templates/eventos.html',
       controller: 'eventosCtrl'
     })
 
         
     .state('mapa', {
-      url: '/page7',
+      url: '/mapa',
       templateUrl: 'templates/mapa.html',
       controller: 'mapaCtrl'
     })
@@ -93,34 +98,34 @@ angular.module('app.routes', [])
 
         
     .state('play', {
-      url: '/page8',
+      url: '/como_funciona',
       templateUrl: 'templates/play.html',
       controller: 'playCtrl'
     })
 
         
-    .state('preferencias', {
+    /*.state('preferencias', {
       url: '/page10',
       templateUrl: 'templates/preferencias.html',
       controller: 'preferenciasCtrl'
-    })
+    })*/
         
 
     .state('ayuda', {
-      url: '/page11',
+      url: '/ayuda',
       templateUrl: 'templates/ayuda.html',
       controller: 'ayudaCtrl'
     })
         
 
     .state('informacion', {
-      url: '/page12',
+      url: '/version',
       templateUrl: 'templates/informacion.html',
       controller: 'informacionCtrl'
     })
  
     .state('contacto', {
-      url: '/page13',
+      url: '/contactanos',
       templateUrl: 'templates/contacto.html',
       controller: 'contactoCtrl'
     })
@@ -128,6 +133,6 @@ angular.module('app.routes', [])
     ;
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/page1');
+  $urlRouterProvider.otherwise('/bienvenido');
 
 });

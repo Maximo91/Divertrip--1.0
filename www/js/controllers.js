@@ -1,28 +1,29 @@
 angular.module('app.controllers', [])
 
 .controller('dIVERTRIPCtrl', function($scope, $ionicPopup) {
-  	$scope.salir = function() {
-    	  var confirmPopup = $ionicPopup.confirm({
-    	  title: 'La aplicación se cerrara.',
-    	  template: ' ¿Desea continuar ?',
-    	  buttons:[
-    	  {text:'NO', 
+	$scope.salir = function() {
+	  var confirmPopup = $ionicPopup.confirm({
+      title: 'La aplicación se cerrara.',
+      template: ' ¿Desea continuar ?',
+      buttons:[{
+        text:'NO', 
         onTap:function(e){
-       	return true; 
-       	}
-       	},
-        {text: 'SI', 
+          return true; 
+      	}
+      },
+      {
+        text: 'SI', 
         type: 'button-positive',
-       	onTap: function(e){
-       	ionic.Platform.exitApp();
-       	return true; 
-       	}
-        }]});
-  	};
+      	onTap: function(e){
+          ionic.Platform.exitApp();
+          return true; 
+      	}
+      }]
+    });
+	};
 })
    
 .controller('personasCtrl', function($scope) {
-
 })
    
 .controller('patrocinadorCtrl', function($scope, localStorageService,
@@ -59,9 +60,10 @@ angular.module('app.controllers', [])
   }
 })
 
-.controller('historialCtrl', function($scope, localStorageService,
+.controller('historialCtrl', function($scope, $timeout, localStorageService,
  $http, $state) {
-  $http({
+  $scope.peticionHistorial =function () {
+    $http({
       method: 'GET',
       url: 'http://divertrip.miguelgonzaleza.com/index.php',
       params: {
@@ -79,10 +81,51 @@ angular.module('app.controllers', [])
     .catch(function(err) {
       console.log('Error');
       console.log(err);
-    });
-})   
+    });    
+  };
+  $scope.doRefresh = function() {
+    console.log('Refreshing!');
+    $scope.peticionHistorial();
+    $timeout( function() {
+      $scope.$broadcast('scroll.refreshComplete');
+    },1000);    
+  };
+  $scope.peticionHistorial();
+})
 
-.controller('verEventoCtrl',function($scope,$state, localStorageService,
+.controller('eventosCtrl', function($timeout, $scope, localStorageService, $http, 
+  $state) {
+  $scope.peticionEventos = function (){
+    $http({
+      method: 'GET',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
+      params: {
+        r: 'evento/getEventsList',
+      },
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(function(response) {
+      if(response != "null") {
+        console.log("evento");
+        $scope.evento = response.data;
+      }
+    })
+    .catch(function(err) {
+      console.log('Error');
+      console.log(err);
+    });
+  };
+  $scope.doRefresh = function() {
+    console.log('Refreshing!');
+    $scope.peticionEventos();
+    $timeout( function() {
+      $scope.$broadcast('scroll.refreshComplete');
+    },1000);
+  };
+  $scope.peticionEventos();
+})    
+
+.controller('verEventoCtrl',function($scope, $state, localStorageService,
   $http, NgMap){
   $scope.prueba = function(id){
     localStorageService.set('idEvento',id);
@@ -122,11 +165,10 @@ angular.module('app.controllers', [])
   }
 })
 
-.controller('verEventoPersonaCtrl',function($scope,$state, localStorageService,
+.controller('verEventoPersonaCtrl',function($scope, $state, localStorageService,
   $http, NgMap){
   $scope.prueba = function(id){
-
-  console.log(id);
+    console.log(id);
     localStorageService.set('idEvento',id);
     $http({
       method: 'GET',
@@ -164,55 +206,56 @@ angular.module('app.controllers', [])
 })
 
 .controller('dataPersonCtrl',function($scope,$state, localStorageService,
-  $http){
-   $http({
-      method: 'GET',
-      url: 'http://divertrip.miguelgonzaleza.com/index.php',
-      params: {
-        r: 'evento/viewEventPerson',
-        id_Evento:localStorageService.get('idEvento'),
-      },
-      headers: {'Content-Type': 'application/json'}
-    })
-    .then(function(response) {
-      if(response != "null") {
-        console.log("historial");
-        $scope.ev = response.data;
-        console.log($scope.ev.image);
-        if($scope.ev.image==null)
-          $scope.ev.image="img/movil.png";
-      }
-    })
-    .catch(function(err) {
-      console.log('Error');
-      console.log(err);
-    });
+  $http) {
+  $http({
+    method: 'GET',
+    url: 'http://divertrip.miguelgonzaleza.com/index.php',
+    params: {
+      r: 'evento/viewEventPerson',
+      id_Evento:localStorageService.get('idEvento'),
+    },
+    headers: {'Content-Type': 'application/json'}
+  })
+  .then(function(response) {
+    if(response != "null") {
+      console.log("historial");
+      $scope.ev = response.data;
+      console.log($scope.ev.image);
+      if($scope.ev.image==null)
+        $scope.ev.image="img/movil.png";
+    }
+  })
+  .catch(function(err) {
+    console.log('Error');
+    console.log(err);
+  });
 })
+
 .controller('dataCtrl',function($scope,$state, localStorageService,
   $http){
-   $http({
-      method: 'GET',
-      url: 'http://divertrip.miguelgonzaleza.com/index.php',
-      params: {
-        r: 'evento/viewEvent',
-        id_Evento:localStorageService.get('idEvento'),
-        id_Patrocinador: localStorageService.get('idPatrocinador'),
-      },
-      headers: {'Content-Type': 'application/json'}
-    })
-    .then(function(response) {
-      if(response != "null") {
-        console.log("historial");
-        $scope.ev = response.data;
-        console.log($scope.ev.image);
-        if($scope.ev.image==null)
-          $scope.ev.image="img/movil.png";
-      }
-    })
-    .catch(function(err) {
-      console.log('Error');
-      console.log(err);
-    });
+  $http({
+    method: 'GET',
+    url: 'http://divertrip.miguelgonzaleza.com/index.php',
+    params: {
+      r: 'evento/viewEvent',
+      id_Evento:localStorageService.get('idEvento'),
+      id_Patrocinador: localStorageService.get('idPatrocinador'),
+    },
+    headers: {'Content-Type': 'application/json'}
+  })
+  .then(function(response) {
+    if(response != "null") {
+      console.log("historial");
+      $scope.ev = response.data;
+      console.log($scope.ev.image);
+      if($scope.ev.image==null)
+        $scope.ev.image="img/movil.png";
+    }
+  })
+  .catch(function(err) {
+    console.log('Error');
+    console.log(err);
+  });
 })
 
 .controller('eliminarEventoCtrl',function($scope,$state, localStorageService,
@@ -233,7 +276,7 @@ angular.module('app.controllers', [])
       if(response.data == '"success"') {
         var confirmPopup = $ionicPopup.alert({
           title: 'Noticia',
-          template: 'Evento eliminado con exito',
+          template: 'Evento eliminado con exito. Por favor deslice hacia abajo para actualizar información',
         });
         $state.go('historial');   
       }
@@ -243,75 +286,30 @@ angular.module('app.controllers', [])
       console.log(err);
     });
   }
-
 })
 
 .controller('bienvenidoCtrl', function($scope, $ionicPopup) {
-  
-    	$scope.salir = function() {
-    	var confirmPopup = $ionicPopup.confirm({
-    	title: 'La aplicación se cerrara.',
+	$scope.salir = function() {
+  	var confirmPopup = $ionicPopup.confirm({
+    	title: 'La aplicación se cerrará.',
     	template: ' ¿Desea continuar ?',
-    	buttons:[
-    	{text:'NO', 
+    	buttons:[{
+        text:'NO', 
         onTap:function(e){
-       	return true; 
+       	  return true; 
        	}
-       	},
-        {text: 'SI', 
-        type: 'button-positive',
-       	onTap: function(e){
-       	ionic.Platform.exitApp();
-       	return true; 
-       	}
-        }]});
-    };
-})
-   
-.controller('menuCtrl', function($scope, $ionicPopup) {
-  
-    	$scope.salir = function() {
-    	var confirmPopup = $ionicPopup.confirm({
-    	title: 'La aplicación se cerrara.',
-    	template: ' ¿Desea continuar ?',
-    	buttons:[
-    	{text:'NO', 
-        onTap:function(e){
-       	return true; 
-       	}
-       	},
-        {text: 'SI', 
-        type: 'button-positive',
-       	onTap: function(e){
-       	ionic.Platform.exitApp();
-       	return true; 
-       	}
-        }]});
-    	};
-})
-   
-.controller('eventosCtrl', function($scope, localStorageService, $http, $state) {
-  
-  $http({
-      method: 'GET',
-      url: 'http://divertrip.miguelgonzaleza.com/index.php',
-      params: {
-        r: 'evento/getEventsList',
       },
-      headers: {'Content-Type': 'application/json'}
-    })
-    .then(function(response) {
-      if(response != "null") {
-        console.log("evento");
-        $scope.evento = response.data;
-      }
-    })
-    .catch(function(err) {
-      console.log('Error');
-      console.log(err);
-    });/*
-    $scope.filtroEvento = null;*/
-})   
+      {
+        text: 'SI', 
+        type: 'button-positive',
+       	onTap: function(e){
+       	ionic.Platform.exitApp();
+       	  return true; 
+       	}
+      }]
+    });
+  };
+}) 
    
 .controller('mapaCtrl', function($scope, $ionicLoading,$http, $state) {
   var infomarker=false;
@@ -331,30 +329,31 @@ angular.module('app.controllers', [])
           longitude: $scope.longitude
         }, 
         headers: {'Content-Type': 'application/json'}
-        }).success(function(response){
-            var lat, longi, Titulo, myLatlng, Cuerpo, contentString, marker,infowindow;
-            for(var i=response.length-1;i>= 0;i--) {
-              lat = response[i].latitude;
-              longi = response[i].longitude;
-              myLatlng = new google.maps.LatLng(lat,longi);
-              marker = new google.maps.Marker({
-                   position: myLatlng,
-                   map: map,
-                   icon: {url:'img/marker.png'}
-              });
-              Titulo = response[i].nombre;
-              Cuerpo = response[i].description; 
-              contentString = 
-                  '<div id="content">'+
-                  '<div id="siteNotice"></div>'+
-                  '<h1 id="firstHeading" class="firstHeading">'+Titulo+'</h1>'+
-                  '<div id="bodyContent">'+
-                  '<p>'+Cuerpo+'</p>'+
-                  '</div>'+
-                  '</div>';
-                  attachSecretMessage(marker, contentString);
-            };
-        console.log(response.length);
+      })
+      .success(function(response){
+        var lat, longi, Titulo, myLatlng, Cuerpo, contentString, marker,infowindow;
+        for(var i=response.length-1;i>= 0;i--) {
+          lat = response[i].latitude;
+          longi = response[i].longitude;
+          myLatlng = new google.maps.LatLng(lat,longi);
+          marker = new google.maps.Marker({
+               position: myLatlng,
+               map: map,
+               icon: {url:'img/marker.png'}
+          });
+          Titulo = response[i].nombre;
+          Cuerpo = response[i].description; 
+          contentString = 
+              '<div id="content">'+
+              '<div id="siteNotice"></div>'+
+              '<h1 id="firstHeading" class="firstHeading">'+Titulo+'</h1>'+
+              '<div id="bodyContent">'+
+              '<p>'+Cuerpo+'</p>'+
+              '</div>'+
+              '</div>';
+              attachSecretMessage(marker, contentString);
+        };
+        //console.log(response.length);
       });
     };
     //eventos
@@ -363,7 +362,7 @@ angular.module('app.controllers', [])
         method: 'GET',
         url: 'http://divertrip.miguelgonzaleza.com/index.php',
         params: {
-          r: 'Evento/GetEventsList',
+          r: 'Evento/getEventsList',
           idEvento: $scope.idEvento,
           name_event: $scope.name_event,
           description_event: $scope.description_event,
@@ -377,35 +376,35 @@ angular.module('app.controllers', [])
           longitude: $scope.longitude
         }, 
         headers: {'Content-Type': 'application/json'}
-        }).success(function(response){
-            var lat, longi, Titulo, myLatlng, Cuerpo, contentString, marker,infowindow;
-            for(var i=response.length-1;i>= 0;i--) {
-              lat = response[i].latitude;
-              longi = response[i].longitude;
-              myLatlng = new google.maps.LatLng(lat,longi);
-              marker = new google.maps.Marker({
-                   position: myLatlng,
-                   map: map,
-                   icon: {url:'img/marker_evento.png'}
-              });
-              Titulo = response[i].name_event;
-              Cuerpo = response[i].description_event; 
-              contentString = 
-                  '<div id="content">'+
-                  '<div id="siteNotice"></div>'+
-                  '<h1 id="firstHeading" class="firstHeading">'+Titulo+'</h1>'+
-                  '<div id="bodyContent">'+
-                  '<p>'+Cuerpo+'</p>'+
-                  '</div>'+
-                  '</div>';
-                  attachSecretMessage(marker, contentString);
-            };
+      })
+      .success(function(response){
+        var lat, longi, Titulo, myLatlng, Cuerpo, contentString, marker,infowindow;
+        for(var i=response.length-1;i>= 0;i--) {
+          lat = response[i].latitude;
+          longi = response[i].longitude;
+          myLatlng = new google.maps.LatLng(lat,longi);
+          marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            icon: {url:'img/marker_evento.png'}
+          });
+          Titulo = response[i].name_event;
+          Cuerpo = response[i].description_event; 
+          contentString = 
+            '<div id="content">'+
+            '<div id="siteNotice"></div>'+
+            '<h1 id="firstHeading" class="firstHeading">'+Titulo+'</h1>'+
+            '<div id="bodyContent">'+
+            '<p>'+Cuerpo+'</p>'+
+            '</div>'+
+            '</div>';
+            attachSecretMessage(marker, contentString);
+        };
         console.log(response.length);
       });
     };
     //fin eventos
   };
-  
   
   function attachSecretMessage(marker, secretMessage) {
     var infowindow = new google.maps.InfoWindow({
@@ -426,7 +425,7 @@ angular.module('app.controllers', [])
       return;
     }
     $scope.loading = $ionicLoading.show({
-      content: 'Getting current location...',
+      content: 'Obteniendo ubicación actual',
       showBackdrop: false
     });
     
@@ -439,36 +438,30 @@ angular.module('app.controllers', [])
         map: $scope.map,
         icon: {url:'img/icono_gps.png'}
       });
-//ver problema de temporalidad del marker ya que genera muchos marker
-    $scope.loading = $ionicLoading.hide();
-    },function (error) {
-      alert('Unable to get location: ' + error.message);
+      $scope.loading = $ionicLoading.hide();
+    },
+    function (error) {
+      alert('Imposible obtener ubicación: ' + error.message);
     });
   };
 })
-//--------------------------------------- fin mapa
    
 .controller('playCtrl', function($scope) {
-
 })
    
 .controller('preferenciasCtrl', function($scope) {
 	$scope.settings = {
   	recibirnotificaciones: true
   };
-
 })
    
 .controller('ayudaCtrl', function($scope) {
-
 })
    
 .controller('informacionCtrl', function($scope) {
-
 })
    
 .controller('contactoCtrl', function($scope) {
-
 })
 
 .controller('inicioCtrl', function($scope, $ionicPopup, localStorageService,
@@ -497,28 +490,6 @@ angular.module('app.controllers', [])
       ]
     });
   };
-})
-   
-.controller('menuPatrocinadorCtrl', function($scope, $ionicPopup) {
-  
-    	$scope.salir = function() {
-    	var confirmPopup = $ionicPopup.confirm({
-    	title: 'La aplicación se cerrara.',
-    	template: ' ¿Desea continuar ?',
-    	buttons:[
-    	{text:'NO', 
-        onTap:function(e){
-       	return true; 
-       	}
-       	},
-        {text: 'SI', 
-        type: 'button-positive',
-       	onTap: function(e){
-       	ionic.Platform.exitApp();
-       	return true; 
-       	}
-        }]});
-	};
 })
    
 .controller('administrarEventosCtrl', function($http,localStorageService,
@@ -558,11 +529,7 @@ angular.module('app.controllers', [])
       sec = '0'+sec;
     }
     datevalues = year + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec ;
-    //console.log(datevalues);
     $scope.Evento.start_event = ""+datevalues+"";
-   /* console.log($scope.Evento.start_event);
-    console.log($scope.Evento.address);
-    console.log($scope.Evento.Categoria_idCategoria);*/
   };
 
   $scope.submit = function() {
@@ -591,8 +558,7 @@ angular.module('app.controllers', [])
   };
 })
 
-.controller('listarCategorias', function($scope, $http)
-{
+.controller('listarCategorias', function($scope, $http){
   $http({
       method: 'GET',
       url: 'http://divertrip.miguelgonzaleza.com/index.php',
@@ -631,34 +597,33 @@ angular.module('app.controllers', [])
         title: 'ERROR',
         template: 'Las claves no son iguales',
       });
-
     }else{
       $http({
-          method: 'GET',
-          url: 'http://divertrip.miguelgonzaleza.com/index.php',
-          params: {
-            r: 'login/setNewPassword',
-            id_Patrocinador: localStorageService.get('idPatrocinador'),
-            passwd:$scope.actual_password,
-            newpasswd:$scope.new_password,
-          },
-          headers: {'Content-Type': 'application/json'}
-        })
-        .then(function(response) {
-          console.log(response);
-          if(response.data == '"success"') {
-            var confirmPopup = $ionicPopup.alert({
-              title: 'Noticia',
-              template: 'Contraseña cambiada con éxito',
-            });
-            $state.go('menuPatrocinador');
-          }else{
-            var confirmPopup = $ionicPopup.alert({
-            title: 'ERROR',
-            template: 'La clave actual es incorrecta',
-            });
-          }
-        })
+        method: 'GET',
+        url: 'http://divertrip.miguelgonzaleza.com/index.php',
+        params: {
+          r: 'login/setNewPassword',
+          id_Patrocinador: localStorageService.get('idPatrocinador'),
+          passwd:$scope.actual_password,
+          newpasswd:$scope.new_password,
+        },
+        headers: {'Content-Type': 'application/json'}
+      })
+      .then(function(response) {
+        console.log(response);
+        if(response.data == '"success"') {
+          var confirmPopup = $ionicPopup.alert({
+            title: 'Noticia',
+            template: 'Contraseña cambiada con éxito',
+          });
+          $state.go('menuPatrocinador');
+        }else{
+          var confirmPopup = $ionicPopup.alert({
+          title: 'ERROR',
+          template: 'La clave actual es incorrecta',
+          });
+        }
+      })
       .catch(function(err) {
         console.log('Error');
         console.log(err);
@@ -668,6 +633,4 @@ angular.module('app.controllers', [])
 })
    
 .controller('reestablecerCtrl', function($scope) {
-
 });
- 

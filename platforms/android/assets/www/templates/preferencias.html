@@ -1,6 +1,8 @@
 <ion-view title="PREFERENCIAS">
+    <ion-nav-buttons side="right">
+      <button class="button icon-left button-icon ion-navicon-round" ui-sref="bienvenido"></button>
+    </ion-nav-buttons>
     <ion-content padding="true" class="has-header">
-        <button class="button icon-left button-icon ion-navicon-round" ui-sref="menu"></button>
         <form class="list">
             <ion-toggle toggle-class="toggle-balanced" ng-model="settings.recibirnotificaciones">Recibir Notificaciones</ion-toggle>
         </form>

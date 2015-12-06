@@ -1,51 +1,39 @@
-<ion-view title="EVENTOS">
-    <ion-content padding="true" class="has-header">
-        <button class="button icon-left button-icon ion-navicon-round" ui-sref="menu"></button>
+<ion-view title="Eventos">
+    <ion-nav-buttons side="right">
+      <button class="button icon-left button-icon ion-navicon-round" ui-sref="bienvenido"></button>
+    </ion-nav-buttons>
+    <ion-content padding="true" class="has-header" ng-controller="eventosCtrl">
+        <ion-refresher pulling-text="Suelte para actualizar" on-refresh="doRefresh()">
+        </ion-refresher>
         <form class="list">
             <label class="item item-input">
                 <i class="icon ion-search placeholder-icon"></i>
-                <input type="search" placeholder="Buscar Evento">
+                <input ng-model="filtroEvento" type="search" placeholder="Buscar Evento">
             </label>
             <div class="spacer" style="width: 300px; height: 13px;"></div>
             <label class="item item-input">
-                <span class="input-label">Filtrar Fecha</span>
-                <input type="date" placeholder="DD-MM-AAAA">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input ng-model="filtroLugar" type="search" placeholder="Buscar Lugar">
             </label>
-            <div class="spacer" style="width: 300px; height: 13px;"></div>
-            <label class="item item-select">
+            <!-- <label class="item item-input item-select" ng-controller="listarCategorias">
                 <span class="input-label">Categoría</span>
-                <select>
-                    <option selected>Musica</option>
-                    <option>Talleres</option>
-                    <option>Cultural</option>
+                <select ng-model="filtroCategoria" ng-options="obj.idCategoria as obj.name for obj in Categoria_idCategoria">
                 </select>
-            </label>
-            <div class="spacer" style="width: 300px; height: 13px;"></div>
-            <ion-item class="item-thumbnail-left">
-                <img src="img/shamanes.jpg">
-                <h2>ShamanesCrew</h2>
-                <p>Música / Bar-L</p>
-            </ion-item>
-            <ion-item class="item-thumbnail-left">
-                <img src="img/movimiento.jpg">
-                <h2>Movimiento Original</h2>
-                <p>Música / Valparaíso</p>
-            </ion-item>
-            <ion-item class="item-thumbnail-left">
-                <img src="img/episodio_4.png">
-                <h2>Star Wars IV - Una Nueva Esperanza</h2>
-                <p>Cine / Teatro Valparaíso</p>
-            </ion-item>
-            <ion-item class="item-thumbnail-left">
-                <img src="img/episodio_5.png">
-                <h2>Star Wars V - El Imperio Contra - Ataca</h2>
-                <p>Cine / Teatro Valparaíso</p>
-            </ion-item>
-            <ion-item class="item-thumbnail-left">
-                <img src="img/episodio_6.jpg">
-                <h2>Star Wars VI - El Regreso del Jedi</h2>
-                <p>Cine / Teatro Valparaíso</p>
-            </ion-item>
+            </label> -->
         </form>
-    </ion-content>
+        <div class="spacer" style="width: 300px; height: 13px;"></div>
+        <div ng-model="evento">
+        <ion-list ng-repeat="ev in evento | filter: {name_event: filtroEvento} | filter: {address: filtroLugar}">
+            <ion-item class="item-divider">{{ev.name_event}}</ion-item>
+            <ion-item class="item-thumbnail-left">
+                <img src="{{ev.image}}">
+                <p><b>Tipo:</b> <i>{{ev.Categoria_idCategoria}}</i></p>
+                <p><b>Dia del evento:</b> {{ev.start_event}}</p>
+                <p><b>Lugar del evento:</b> {{ev.address}}</p>
+                <p><b>Descripción:</b> {{ev.description_event}}</p>
+            <input  type="submit" ng-controller="verEventoPersonaCtrl" class="button button-small button-light col col-33 col-offset-67" value="Ver más" ng-click="prueba({{ev.idEvento}})" ui-sref="verEventoPersona"/>
+            </ion-item>
+        </ion-list>
+    </div>
+</ion-content>
 </ion-view>
