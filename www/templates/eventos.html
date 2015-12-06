@@ -1,8 +1,10 @@
 <ion-view title="Eventos">
     <ion-nav-buttons side="right">
-      <button class="button icon-left button-icon ion-navicon-round" ui-sref="menu"></button>
+      <button class="button icon-left button-icon ion-navicon-round" ui-sref="bienvenido"></button>
     </ion-nav-buttons>
     <ion-content padding="true" class="has-header" ng-controller="eventosCtrl">
+        <ion-refresher pulling-text="Suelte para actualizar" on-refresh="doRefresh()">
+        </ion-refresher>
         <form class="list">
             <label class="item item-input">
                 <i class="icon ion-search placeholder-icon"></i>

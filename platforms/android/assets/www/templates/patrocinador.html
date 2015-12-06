@@ -1,4 +1,7 @@
 <ion-view title="PATROCINADOR">
+    <ion-nav-buttons side="right">
+      <button class="button icon-left button-icon ion-home" ui-sref="dIVERTRIP"></button>
+    </ion-nav-buttons>
     <ion-content padding="true" class="has-header">
         <br><br>
 
@@ -8,12 +11,12 @@
                 <form name="formularioPat" ng-controller="patrocinadorCtrl">
                     <label class="item item-input">
                         <span class="input-label" >Usuario</span>
-                        <input name="user_name" type="text" placeholder="" ng-model="user_name">
+                        <input name="user_name" type="text" placeholder="ingrese nombre de usuario" ng-model="user_name">
                     </label>
                     <br>
                     <label class="item item-input">
                         <span class="input-label">Contraseña</span>
-                        <input name="passwd"  type="password" placeholder="" ng-model="passwd">
+                        <input name="passwd"  type="password" placeholder="ingrese su contraseña" ng-model="passwd">
                     </label>
                 
 
@@ -24,7 +27,6 @@
                     <input type="submit" class="button button-positive button-block icon-right ion-chevron-right" value="Iniciar sesión" ng-click="submit(formularioPat)" />
 
                     </form>
-                    {{ data.first_name }}
             <a ui-sref="reestablecer" class="button button-positive button-clear button-block ">¿Olvidaste tu contraseña?</a>
             </ion-list>
     </ion-content>

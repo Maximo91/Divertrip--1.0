@@ -4,7 +4,8 @@
     </ion-nav-buttons>
 
     <ion-content padding="true" class="has-header" ng-controller="historialCtrl">
-        <ion-list></ion-list>
+        <ion-refresher pulling-text="Suelte para actualizar" on-refresh="doRefresh()">
+        </ion-refresher>
         <a ui-sref="administrarEventos" class="button button-block button-balanced icon-right ion-android-add">Añadir</a>
         <div class="spacer" style="width: 300px; height: 13px;"></div>
         <div ng-model="historial">

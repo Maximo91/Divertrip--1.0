@@ -59,8 +59,34 @@ angular.module('app.controllers', [])
   }
 })
 
-.controller('historialCtrl', function($scope, localStorageService,
+.controller('historialCtrl', function($scope, $timeout, localStorageService,
  $http, $state) {
+  $scope.doRefresh = function() {
+      console.log('Refreshing!');
+      $http({
+        method: 'GET',
+        url: 'http://divertrip.miguelgonzaleza.com/index.php',
+        params: {
+          r: 'evento/getEventsListByPartner',
+          id_Patrocinador: localStorageService.get('idPatrocinador'),
+        },
+        headers: {'Content-Type': 'application/json'}
+      })
+      .then(function(response) {
+        if(response != "null") {
+          console.log("historial");
+          $scope.historial = response.data;
+        }
+      })
+      .catch(function(err) {
+        console.log('Error');
+        console.log(err);
+      });
+      $timeout( function() {
+        $scope.$broadcast('scroll.refreshComplete');
+      },100);
+      
+  };
   $http({
       method: 'GET',
       url: 'http://divertrip.miguelgonzaleza.com/index.php',
@@ -80,7 +106,53 @@ angular.module('app.controllers', [])
       console.log('Error');
       console.log(err);
     });
-})   
+})
+
+.controller('eventosCtrl', function($timeout,$scope, localStorageService, $http, $state) {
+  $scope.doRefresh = function() {
+      console.log('Refreshing!');
+      $http({
+      method: 'GET',
+        url: 'http://divertrip.miguelgonzaleza.com/index.php',
+        params: {
+          r: 'evento/getEventsList',
+        },
+        headers: {'Content-Type': 'application/json'}
+      })
+      .then(function(response) {
+        if(response != "null") {
+          console.log("evento");
+          $scope.evento = response.data;
+        }
+      })
+      .catch(function(err) {
+        console.log('Error');
+        console.log(err);
+      });
+      $timeout( function() {
+        $scope.$broadcast('scroll.refreshComplete');
+      },100);
+  };
+  $http({
+      method: 'GET',
+      url: 'http://divertrip.miguelgonzaleza.com/index.php',
+      params: {
+        r: 'evento/getEventsList',
+      },
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(function(response) {
+      if(response != "null") {
+        console.log("evento");
+        $scope.evento = response.data;
+      }
+    })
+    .catch(function(err) {
+      console.log('Error');
+      console.log(err);
+    });/*
+    $scope.filtroEvento = null;*/
+})    
 
 .controller('verEventoCtrl',function($scope,$state, localStorageService,
   $http, NgMap){
@@ -266,52 +338,7 @@ angular.module('app.controllers', [])
        	}
         }]});
     };
-})
-   
-.controller('menuCtrl', function($scope, $ionicPopup) {
-  
-    	$scope.salir = function() {
-    	var confirmPopup = $ionicPopup.confirm({
-    	title: 'La aplicación se cerrara.',
-    	template: ' ¿Desea continuar ?',
-    	buttons:[
-    	{text:'NO', 
-        onTap:function(e){
-       	return true; 
-       	}
-       	},
-        {text: 'SI', 
-        type: 'button-positive',
-       	onTap: function(e){
-       	ionic.Platform.exitApp();
-       	return true; 
-       	}
-        }]});
-    	};
-})
-   
-.controller('eventosCtrl', function($scope, localStorageService, $http, $state) {
-  
-  $http({
-      method: 'GET',
-      url: 'http://divertrip.miguelgonzaleza.com/index.php',
-      params: {
-        r: 'evento/getEventsList',
-      },
-      headers: {'Content-Type': 'application/json'}
-    })
-    .then(function(response) {
-      if(response != "null") {
-        console.log("evento");
-        $scope.evento = response.data;
-      }
-    })
-    .catch(function(err) {
-      console.log('Error');
-      console.log(err);
-    });/*
-    $scope.filtroEvento = null;*/
-})   
+}) 
    
 .controller('mapaCtrl', function($scope, $ionicLoading,$http, $state) {
   var infomarker=false;
@@ -497,28 +524,6 @@ angular.module('app.controllers', [])
       ]
     });
   };
-})
-   
-.controller('menuPatrocinadorCtrl', function($scope, $ionicPopup) {
-  
-    	$scope.salir = function() {
-    	var confirmPopup = $ionicPopup.confirm({
-    	title: 'La aplicación se cerrara.',
-    	template: ' ¿Desea continuar ?',
-    	buttons:[
-    	{text:'NO', 
-        onTap:function(e){
-       	return true; 
-       	}
-       	},
-        {text: 'SI', 
-        type: 'button-positive',
-       	onTap: function(e){
-       	ionic.Platform.exitApp();
-       	return true; 
-       	}
-        }]});
-	};
 })
    
 .controller('administrarEventosCtrl', function($http,localStorageService,
