@@ -632,5 +632,44 @@ angular.module('app.controllers', [])
   }
 })
    
-.controller('reestablecerCtrl', function($scope) {
+.controller('restoreController', function($scope, $http, $state, $ionicPopup) {
+  $scope.submit = function(form) {
+    if($scope.email == null || $scope.email.length == 0) {
+      var confirmPopup = $ionicPopup.alert({
+        title: '¡Atención!',
+        template: 'Por favor, complete un correo electrónico para restablecer su contraseña.',
+      });
+    } else {
+      $http({
+        method: 'GET'
+      , url: 'http://divertrip.miguelgonzaleza.com/index.php'
+      , params: {
+          r: 'patrocinador/restorePassword',
+          email: $scope.email,
+        },
+        headers: {'Content-Type': 'application/json'}
+      })
+      .then(function(response) {
+        if(response.data.email == null) {
+          var confirmPopup = $ionicPopup.alert({
+            title: '¡Atención!',
+            template: 'El correo electrónico que ingresaste no existe.',
+          });   
+        } else {
+          var confirmPopup = $ionicPopup.alert({
+            title: '¡Atención!',
+            template: 'Tu contraseña ya se ha generado satisfactoriamente. Revisa tu correo electrónico para saber cuál es la nueva contraseña.',
+          });
+          confirmPopup.then(function(res) {
+            $state.go('patrocinador');
+          });
+        }
+      })
+      .catch(function(err) {
+        console.log('Error:');
+        console.log(err);
+      });
+      
+    }
+  }
 });

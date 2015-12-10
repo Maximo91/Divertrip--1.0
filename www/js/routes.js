@@ -59,7 +59,7 @@ angular.module('app.routes', [])
     .state('reestablecer', {
       url: '/reestablecer_contrasena',
       templateUrl: 'templates/reestablecer.html',
-      controller: 'reestablecerCtrl'
+      controller: 'restoreController'
     })
 
     .state('personas', {

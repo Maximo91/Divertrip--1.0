@@ -1,27 +1,22 @@
-<ion-view title="Reestablecer contraseña">
-    <ion-nav-buttons side="right">
-      <button class="button icon-left button-icon ion-navicon-round" ui-sref="inicio"></button>
+<ion-view title="RESTABLECER">
+    <ion-nav-buttons side="left">
+      <button class="button-icon button-positive icon ion-android-arrow-back" ui-sref="patrocinador"></button>
     </ion-nav-buttons>
-    <ion-content padding="true" class="has-header">
-        <img src="img/patrocinador.png" style="display:block;margin-left:auto;margin-right:auto;width:200px">
-        <ion-list>
-            <br><br>
-            <div class="list card">
-                <div>
-                    <p>Si olvidaste la contraseña favor ingresa el correo electrónico asociado a
-                    <strong>DiVertip</strong>para el reestablecimiento de tus datos.</p>
-                </div>
-            </div>
-         
+  <ion-content padding="true" class="has-header">
+    <br><br>
+    <img src="img/patrocinador.png" style="display:block;margin-left:auto;margin-right:auto;width:200px">
+    <div class="row row-center">
+        <div class="col">
+            <p>Si olvidaste la contraseña, ingresa el correo electrónico asociado a tu cuenta en 
+            <strong>DiVertip</strong>. Se te generará una contraseña aleatoria con la cual podrás acceder a tu cuenta.</p>
         </div>
-        <div class="spacer" style="width: 300px; height: 24px;"></div>
-            <form class="list">
-                <label class="item item-input">
-                    <span class="input-label">E-mail</span>
-                    <input type="email" placeholder="ejemplo@correo.cl">
-                </label>
-            </form>
-        <button ui-sref="patrocinador" class="button button-positive button-block ">Reestablecer</button>
-        </ion-list>
-    </ion-content>
+    </div>
+    <form name="formRestore" ng-controller="restoreController" class="list">
+      <label class="item item-input">
+        <span class="input-label"><b>Correo electrónico</b></span>
+        <input type="email" name="email" ng-model="email" placeholder="ejemplo@correo.cl">
+      </label>
+      <button class="button button-positive button-block " ng-click="submit(formRestore)">Restablecer</button>
+    </form>
+  </ion-content>
 </ion-view>
